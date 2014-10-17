@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 15/10/2014 10:44:16 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="negocio.Entidades.Detalles" table="detalles" catalog="negocio" optimistic-lock="version">
+        <composite-id name="id" class="negocio.Entidades.DetallesId">
+            <key-property name="idDetalle" type="int">
+                <column name="IdDetalle" />
+            </key-property>
+            <key-property name="idProducto" type="int">
+                <column name="IdProducto" />
+            </key-property>
+            <key-property name="idCompra" type="int">
+                <column name="IdCompra" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="compras" class="negocio.Entidades.Compras" update="false" insert="false" fetch="select">
+            <column name="IdCompra" not-null="true" />
+        </many-to-one>
+        <many-to-one name="productos" class="negocio.Entidades.Productos" update="false" insert="false" fetch="select">
+            <column name="IdProducto" not-null="true" />
+        </many-to-one>
+        <property name="total" type="java.lang.Float">
+            <column name="Total" precision="7" />
+        </property>
+        <property name="cantidad" type="java.lang.Integer">
+            <column name="Cantidad" />
+        </property>
+    </class>
+</hibernate-mapping>

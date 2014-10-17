@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 15/10/2014 10:44:16 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="negocio.Entidades.Compras" table="compras" catalog="negocio" optimistic-lock="version">
+        <id name="idCompra" type="java.lang.Integer">
+            <column name="IdCompra" />
+            <generator class="identity" />
+        </id>
+        <property name="fecha" type="date">
+            <column name="Fecha" length="10" />
+        </property>
+        <set name="detalleses" table="detalles" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="IdCompra" not-null="true" />
+            </key>
+            <one-to-many class="negocio.Entidades.Detalles" />
+        </set>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 15/10/2014 10:44:16 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="negocio.Entidades.Productos" table="productos" catalog="negocio" optimistic-lock="version">
+        <id name="idProducto" type="java.lang.Integer">
+            <column name="IdProducto" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="proveedores" class="negocio.Entidades.Proveedores" fetch="select">
+            <column name="IdProveedor" not-null="true" />
+        </many-to-one>
+        <property name="producto" type="string">
+            <column name="Producto" length="200" not-null="true" />
+        </property>
+        <property name="stock" type="int">
+            <column name="Stock" not-null="true" />
+        </property>
+        <property name="precio" type="java.lang.Float">
+            <column name="Precio" precision="5" />
+        </property>
+        <set name="detalleses" table="detalles" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="IdProducto" not-null="true" />
+            </key>
+            <one-to-many class="negocio.Entidades.Detalles" />
+        </set>
+    </class>
+</hibernate-mapping>
