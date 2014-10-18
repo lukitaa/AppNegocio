@@ -6,14 +6,22 @@
 package negocio.Forms;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 import negocio.Controladoras.ControladoraMedia;
+import negocio.Controladoras.ControladoraProductos;
 import negocio.Controladoras.StorageException;
+import negocio.Entidades.Compras;
+import negocio.Entidades.Detalles;
 import negocio.Entidades.Proveedores;
 import negocio.Entidades.Productos;
 
@@ -23,12 +31,22 @@ import negocio.Entidades.Productos;
  */
 public class AltaCompra extends javax.swing.JDialog {
 
+    float total = 0;
     /**
      * Creates new form AltaCompra
      */
     public AltaCompra(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        //Seteo de los valores de las filas de la tabla en el centro
+        DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
+        renderer.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
+        for (int i=0; i<form_tablaProductos.getColumnCount();i++){
+            form_tablaProductos.setDefaultRenderer(form_tablaProductos.getColumnClass(i),renderer);
+        }
+        //Seteo de los valores de las cabezeras de la tabla en el centro
+        DefaultTableCellRenderer renderer2 = (DefaultTableCellRenderer) form_tablaProductos.getTableHeader().getDefaultRenderer();
+        renderer2.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
     }
 
     /**
@@ -52,6 +70,10 @@ public class AltaCompra extends javax.swing.JDialog {
         form_botonRealizarCompra = new javax.swing.JButton();
         form_comboProveedor = new javax.swing.JComboBox();
         form_comboProducto = new javax.swing.JComboBox();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        form_tablaProductos = new javax.swing.JTable();
+        form_botonAgregarProducto = new javax.swing.JButton();
+        form_total = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addWindowFocusListener(new java.awt.event.WindowFocusListener() {
@@ -75,7 +97,7 @@ public class AltaCompra extends javax.swing.JDialog {
         jLabel4.setText("Cantidad:");
 
         jLabel5.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
-        jLabel5.setText("Precio total:");
+        jLabel5.setText("Precio:");
 
         jLabel6.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
         jLabel6.setText("Fecha de compra:");
@@ -100,35 +122,86 @@ public class AltaCompra extends javax.swing.JDialog {
 
         form_comboProducto.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
 
+        form_tablaProductos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Producto", "Proveedor", "Cantidad", "Precio", "Total"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(form_tablaProductos);
+
+        form_botonAgregarProducto.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
+        form_botonAgregarProducto.setText("Agregar productos a la compra");
+        form_botonAgregarProducto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                form_botonAgregarProductoActionPerformed(evt);
+            }
+        });
+
+        form_total.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
+        form_total.setText("Costo total de la compra: $0.");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(85, 85, 85))
             .addGroup(layout.createSequentialGroup()
+                .addGap(214, 214, 214)
+                .addComponent(jLabel1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel6)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel5))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(form_fecha, javax.swing.GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE)
-                    .addComponent(form_precio)
-                    .addComponent(form_cantidad)
-                    .addComponent(form_botonRealizarCompra, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(form_comboProducto, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(form_comboProveedor, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel6)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(form_fecha, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel4))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(form_cantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(form_comboProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel5))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(form_precio, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(form_comboProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(0, 4, Short.MAX_VALUE))
+                            .addComponent(form_botonAgregarProducto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(form_botonRealizarCompra, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(form_total)))
+                .addContainerGap())
         );
-
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {form_cantidad, form_fecha, form_precio});
-
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
@@ -137,23 +210,25 @@ public class AltaCompra extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(form_comboProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(form_comboProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(form_comboProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(form_comboProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(form_cantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(form_cantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(form_precio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel6)
+                        .addComponent(form_fecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(form_botonAgregarProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(form_precio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 323, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(form_fecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(form_total)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(form_botonRealizarCompra)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -164,32 +239,25 @@ public class AltaCompra extends javax.swing.JDialog {
 
     //Evento en el que gana el foco el form para completar los combos y la fecha actual.
     private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
-        //Completar los combos con los productos y los proveedores.
-        List<Productos> prod = null;
-        List<Proveedores> prov = null;
-        try {
-            prod = ControladoraMedia.getProductos();
-            prov = ControladoraMedia.getProveedores();
-            completarCombo(prov,prod);
-        } catch (StorageException ex) {
-            Logger.getLogger(AltaCompra.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(null,"Se produjo un error al intentar cargar los productos y/o los proveedores.","Error!",JOptionPane.PLAIN_MESSAGE);
+        if(form_comboProducto.getItemCount() <= 0 && form_comboProveedor.getItemCount() <= 0){
+            //Completar los combos con los productos y los proveedores.
+            List<Productos> prod = null;
+            List<Proveedores> prov = null;
+            try {
+                prod = ControladoraMedia.getProductos();
+                prov = ControladoraMedia.getProveedores();
+                completarCombo(prov,prod);
+            } catch (StorageException ex) {
+                Logger.getLogger(AltaCompra.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null,"Se produjo un error al intentar cargar los productos y/o los proveedores.","Error!",JOptionPane.PLAIN_MESSAGE);
+            }
         }
         //Completar la fecha con la fecha actual.
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         Date date = new Date();
         form_fecha.setText(dateFormat.format(date));
     }//GEN-LAST:event_formWindowGainedFocus
-
-    //Boton para realizar la compra y guardarla en la BD
-    private void form_botonRealizarCompraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_form_botonRealizarCompraActionPerformed
-        //TODO: CODE HERE
-        //TODO: CODE HERE
-        //TODO: CODE HERE
-        //TODO: CODE HERE
-        //TODO: CODE HERE
-    }//GEN-LAST:event_form_botonRealizarCompraActionPerformed
-
+    
     //Funcion para completar los combobox con los valores de proveedores y productos.
     public void completarCombo(List<Proveedores> prov, List<Productos> prod){
         form_comboProducto.addItem("Seleccionar...");
@@ -198,6 +266,114 @@ public class AltaCompra extends javax.swing.JDialog {
             form_comboProveedor.addItem(p.getProveedor());
         for(negocio.Entidades.Productos p : prod)
             form_comboProducto.addItem(p.getProducto());
+    }
+    
+    //Boton para realizar la compra y guardarla en la BD
+    private void form_botonRealizarCompraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_form_botonRealizarCompraActionPerformed
+        //TODO: CODE HERE
+        DefaultTableModel modelo = (DefaultTableModel) form_tablaProductos.getModel();
+        //Generar el producto necesario para el detalle, a partir del producto seleccionado.
+        Productos productoAgregar = null;
+        List<Productos> listaProd;
+        try {
+            listaProd = ControladoraProductos.getProductos();
+            for(Productos p : listaProd){
+                if(p.getProducto().equals(form_comboProducto.getSelectedItem().toString()))
+                    productoAgregar = p;
+            }
+        } catch (StorageException ex) {
+            Logger.getLogger(AltaCompra.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        //Generar la compra necesario para el detalle, a partir de la fecha seleccionada.
+        Date date = null;
+        try {
+            DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+            date = formatter.parse(form_fecha.getText());
+        } catch (ParseException ex) {
+            Logger.getLogger(AltaCompra.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        Compras compraAgregar = new Compras(date, null);
+        
+        //ACA HAY QUE SEGUIR
+        //ACA HAY QUE SEGUIR
+        //ACA HAY QUE SEGUIR
+        //ACA HAY QUE SEGUIR
+        //ACA HAY QUE SEGUIR
+        
+        
+        
+        Set<Detalles> setDetalles = new HashSet<>();
+        Detalles detail = new Detalles();
+        
+        for(int j = 0; j<modelo.getRowCount();j++){
+            for(int i = 0; i<modelo.getColumnCount(); i++){
+                Integer cant = Integer.valueOf(form_cantidad.getText());
+                Float totalProd = Float.valueOf(form_precio.getText());
+                listaDetalles.add(new Detalles(null, null, productoAgregar, totalProd, cant));
+            }
+        }
+        
+        //Detalles details = new Detalles(detailID, compras, productos, total, cantidad);
+        //Compras compra = new Compras(fecha, detalles);
+    }//GEN-LAST:event_form_botonRealizarCompraActionPerformed
+
+    //Boton de agregar productos a la tabla de compras.
+    private void form_botonAgregarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_form_botonAgregarProductoActionPerformed
+        //Checkeo de todas las variables a ingresar a la compra.
+        boolean error = checkearVariables();
+        if (!error){
+            //Agregar los valores a la tabla.
+            DefaultTableModel modelo = (DefaultTableModel) form_tablaProductos.getModel();
+            total += Float.valueOf(form_precio.getText()) * Integer.valueOf(form_cantidad.getText());
+            String[] data = new String[5];
+            data[0] = form_comboProducto.getSelectedItem().toString();
+            data[1] = form_comboProveedor.getSelectedItem().toString();
+            data[2] = form_cantidad.getText();
+            data[3] = form_precio.getText();
+            float totalProd = Float.valueOf(form_precio.getText()) * Integer.valueOf(form_cantidad.getText());
+            data[4] = String.valueOf(totalProd);
+            modelo.addRow(data);
+            form_tablaProductos.setModel(modelo);
+            form_total.setText("Costo total de la compra: $" + String.valueOf(total) + ".");
+        }
+    }//GEN-LAST:event_form_botonAgregarProductoActionPerformed
+
+    //Checkeo de valores correctos de las variables, retorna el boolean
+    public boolean checkearVariables(){
+        boolean error = false;
+        if(form_comboProducto.getSelectedItem().toString().equals("Seleccionar...")){
+            JOptionPane.showMessageDialog(null,"Por favor, seleccione un producto a agregar en la compra.","Error!",JOptionPane.WARNING_MESSAGE);
+            error = true;
+        }
+        if(form_comboProveedor.getSelectedItem().toString().equals("Seleccionar...")){
+            JOptionPane.showMessageDialog(null,"Por favor, seleccione el proveedor del producto.","Error!",JOptionPane.WARNING_MESSAGE);
+            error = true;
+        }
+        if(form_cantidad.getText().isEmpty()){
+            JOptionPane.showMessageDialog(null,"Por favor, ingrese la cantidad comprada del producto.","Error!",JOptionPane.WARNING_MESSAGE);
+            error = true;
+        }
+        else{
+            try{
+                Integer.parseInt(form_cantidad.getText());
+            }catch(NumberFormatException e){
+                JOptionPane.showMessageDialog(null,"Por favor, ingrese un valor valido para la cantidad.","Error!",JOptionPane.WARNING_MESSAGE);
+                error = true;
+            }
+        }
+        if(form_precio.getText().isEmpty()){
+            JOptionPane.showMessageDialog(null,"Por favor, ingrese el precio del producto.","Error!",JOptionPane.WARNING_MESSAGE);
+            error = true;
+        }
+        else{
+            try{
+                Float.parseFloat(form_precio.getText());
+            }catch(NumberFormatException e){
+                JOptionPane.showMessageDialog(null,"Por favor, ingrese un valor valido para el precio.","Error!",JOptionPane.WARNING_MESSAGE);
+                error = true;
+            }
+        }
+        return error;
     }
     
     /**
@@ -243,17 +419,21 @@ public class AltaCompra extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton form_botonAgregarProducto;
     private javax.swing.JButton form_botonRealizarCompra;
     private javax.swing.JTextField form_cantidad;
     private javax.swing.JComboBox form_comboProducto;
     private javax.swing.JComboBox form_comboProveedor;
     private javax.swing.JFormattedTextField form_fecha;
     private javax.swing.JTextField form_precio;
+    private javax.swing.JTable form_tablaProductos;
+    private javax.swing.JLabel form_total;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }

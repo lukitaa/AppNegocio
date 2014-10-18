@@ -31,6 +31,7 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="140" max="-2" attributes="0"/>
                       <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="0" pref="148" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
@@ -43,15 +44,18 @@
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="form_comboVerComprasProducto" linkSize="1" alignment="0" min="-2" pref="288" max="-2" attributes="0"/>
-                                  <Component id="form_comboVerComprasProveedor" linkSize="1" alignment="0" min="-2" pref="287" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="form_modificarCompra" pref="166" max="32767" attributes="0"/>
-                                  <Component id="form_realizarNuevaCompra" max="32767" attributes="0"/>
+                                  <Component id="form_comboVerComprasProveedor" max="32767" attributes="0"/>
+                                  <Component id="form_comboVerComprasProducto" max="32767" attributes="0"/>
                               </Group>
                           </Group>
+                          <Component id="form_realizarNuevaCompra" alignment="1" max="32767" attributes="0"/>
+                      </Group>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="form_modificarCompra" alignment="1" max="32767" attributes="0"/>
+                          <Component id="jButton1" max="32767" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -65,26 +69,23 @@
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="form_comboVerComprasProducto" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
-                          <Component id="form_comboVerComprasProveedor" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                  </Group>
-                  <Group type="102" attributes="0">
-                      <Component id="form_realizarNuevaCompra" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="form_modificarCompra" min="-2" max="-2" attributes="0"/>
-                  </Group>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="form_comboVerComprasProducto" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Component id="jScrollPane1" pref="359" max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
+                  <Component id="form_comboVerComprasProveedor" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+              <Component id="jScrollPane1" min="-2" pref="326" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="form_realizarNuevaCompra" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
+              <Component id="form_modificarCompra" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jButton1" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -112,9 +113,9 @@
               <Table columnCount="5" rowCount="0">
                 <Column editable="false" title="ID Compra" type="java.lang.Integer"/>
                 <Column editable="false" title="Fecha" type="java.lang.String"/>
-                <Column editable="false" title="Producto" type="java.lang.String"/>
+                <Column editable="false" title="Proveedor" type="java.lang.String"/>
+                <Column editable="false" title="Productos" type="java.lang.String"/>
                 <Column editable="false" title="Cantidad" type="java.lang.String"/>
-                <Column editable="false" title="Total" type="java.lang.String"/>
               </Table>
             </Property>
           </Properties>
@@ -168,6 +169,14 @@
           <Font name="Dialog" size="11" style="1"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Modificar seleccionada"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="jButton1">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Dialog" size="11" style="1"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Ver detalles de la seleccion"/>
       </Properties>
     </Component>
   </SubComponents>

@@ -20,7 +20,7 @@ import org.hibernate.Session;
  */
 public class ControladoraDetalles extends ControladoraMedia {
     
-    public static Detalles agregarProducto(DetallesId detallesId, Compras compras, Productos producto, float total, int cantidad) throws InvalidParameterException, StorageException {
+    public static Detalles agregarDetalle(DetallesId detallesId, Compras compras, Productos producto, float total, int cantidad) throws InvalidParameterException, StorageException {
         
         Detalles p = new Detalles(detallesId, compras, producto, total, cantidad);
         Session session = HibernateUtil.getSessionFactory().openSession();

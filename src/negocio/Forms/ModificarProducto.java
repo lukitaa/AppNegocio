@@ -10,9 +10,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import negocio.Controladoras.ControladoraProductos;
+import negocio.Controladoras.ControladoraProveedores;
 import negocio.Controladoras.StorageException;
 import negocio.Entidades.Proveedores;
 import negocio.Entidades.Productos;
+import negocio.Hibernate.HibernateUtil;
+import org.hibernate.Session;
 
 /**
  *
@@ -166,11 +169,17 @@ public class ModificarProducto extends javax.swing.JDialog {
     //Funcion para rellenar el combobox de proveedores.
     public void completarCombo(){
         List<Proveedores> prov = null;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Productos productoMod = null;
         try {
-            prov = ControladoraProductos.getProveedores();
+            prov = ControladoraProveedores.getProveedores(session);
+            productoMod = ControladoraProductos.getProduct(productoModificar.getIdProducto(),session);
             for(Proveedores p : prov){
                 form_proveedor.addItem(p.getProveedor());
+                if(p.getProveedor().equals(productoMod.getProveedores().getProveedor()))
+                    form_proveedor.setSelectedItem(p.getProveedor());
             }
+            session.close();
         } catch (StorageException ex) {
             Logger.getLogger(ModificarProducto.class.getName()).log(Level.SEVERE, null, ex);
         }

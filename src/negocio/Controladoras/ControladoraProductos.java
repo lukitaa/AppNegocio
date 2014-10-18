@@ -96,4 +96,35 @@ public class ControladoraProductos extends ControladoraMedia {
         }
     }
     
+    //Estos metodos necesitan la session de hibernate como parametro
+    //Utilizados para cuando es necesario acceder a cadenas de objetos
+    public static List<Productos> getProductos(Session session) throws StorageException {
+        try {
+            session.beginTransaction();
+            List<Productos> l = new ProductosDaoImpl(session).fetchAll();
+            session.getTransaction().commit();
+            return l;
+        } catch (HibernateException e) {
+            if (session != null) {
+                session.getTransaction().rollback();
+                session.close();
+        }
+            throw new StorageException("Error al intentar cargar los productos.");
+        }
+    }
+    
+    public static Productos getProduct(int productoId,Session session) throws StorageException {
+        try {
+            session.beginTransaction();
+            Productos p = new ProductosDaoImpl(session).get(productoId);
+            session.getTransaction().commit();
+            return p;
+        } catch(HibernateException e) {
+            if (session != null) {
+                session.getTransaction().rollback();
+                session.close();
+            }
+            throw new StorageException("Error interno al intentar cargar el producto.");
+        }
+    }
 }

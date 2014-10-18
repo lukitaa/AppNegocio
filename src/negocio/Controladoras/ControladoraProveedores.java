@@ -5,8 +5,11 @@
  */
 package negocio.Controladoras;
 
+import java.util.List;
 import java.util.Set;
+import negocio.DAO.ProductosDaoImpl;
 import negocio.DAO.ProveedoresDaoImpl;
+import negocio.Entidades.Productos;
 import negocio.Entidades.Proveedores;
 import negocio.Hibernate.HibernateUtil;
 import org.hibernate.HibernateException;
@@ -93,6 +96,22 @@ public class ControladoraProveedores extends ControladoraMedia {
                 session.close();
             }
             throw new StorageException("Error interno al intentar actualizar el proveedor.");
+        }
+    }
+    
+    //Estos metodos utilizan la session hibernate para mostrar la cadena de objetos.
+    public static List<Proveedores> getProveedores(Session session) throws StorageException {
+        try {
+            session.beginTransaction();
+            List<Proveedores> l = new ProveedoresDaoImpl(session).fetchAll();
+            session.getTransaction().commit();
+            return l;
+        } catch (HibernateException e) {
+            if (session != null) {
+                session.getTransaction().rollback();
+                session.close();
+        }
+        throw new StorageException("Error al intentar cargar los proveedores.");
         }
     }
 }
