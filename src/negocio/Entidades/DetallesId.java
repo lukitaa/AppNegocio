@@ -22,6 +22,11 @@ public class DetallesId  implements java.io.Serializable {
        this.idCompra = idCompra;
     }
    
+    public DetallesId(int idProducto, int idCompra) {
+       this.idProducto = idProducto;
+       this.idCompra = idCompra;
+    }
+    
     public int getIdDetalle() {
         return this.idDetalle;
     }

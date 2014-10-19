@@ -17,11 +17,16 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import negocio.Controladoras.ControladoraAltaCompra;
+import negocio.Controladoras.ControladoraCompras;
+import negocio.Controladoras.ControladoraDetalles;
 import negocio.Controladoras.ControladoraMedia;
 import negocio.Controladoras.ControladoraProductos;
+import negocio.Controladoras.InvalidParameterException;
 import negocio.Controladoras.StorageException;
 import negocio.Entidades.Compras;
 import negocio.Entidades.Detalles;
+import negocio.Entidades.DetallesId;
 import negocio.Entidades.Proveedores;
 import negocio.Entidades.Productos;
 
@@ -241,12 +246,8 @@ public class AltaCompra extends javax.swing.JDialog {
     private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
         if(form_comboProducto.getItemCount() <= 0 && form_comboProveedor.getItemCount() <= 0){
             //Completar los combos con los productos y los proveedores.
-            List<Productos> prod = null;
-            List<Proveedores> prov = null;
-            try {
-                prod = ControladoraMedia.getProductos();
-                prov = ControladoraMedia.getProveedores();
-                completarCombo(prov,prod);
+            try{
+                ControladoraAltaCompra.completarComboBoxDeProductosYProveedores(form_comboProducto, form_comboProveedor);
             } catch (StorageException ex) {
                 Logger.getLogger(AltaCompra.class.getName()).log(Level.SEVERE, null, ex);
                 JOptionPane.showMessageDialog(null,"Se produjo un error al intentar cargar los productos y/o los proveedores.","Error!",JOptionPane.PLAIN_MESSAGE);
@@ -257,16 +258,6 @@ public class AltaCompra extends javax.swing.JDialog {
         Date date = new Date();
         form_fecha.setText(dateFormat.format(date));
     }//GEN-LAST:event_formWindowGainedFocus
-    
-    //Funcion para completar los combobox con los valores de proveedores y productos.
-    public void completarCombo(List<Proveedores> prov, List<Productos> prod){
-        form_comboProducto.addItem("Seleccionar...");
-        form_comboProveedor.addItem("Seleccionar...");
-        for(negocio.Entidades.Proveedores p : prov)
-            form_comboProveedor.addItem(p.getProveedor());
-        for(negocio.Entidades.Productos p : prod)
-            form_comboProducto.addItem(p.getProducto());
-    }
     
     //Boton para realizar la compra y guardarla en la BD
     private void form_botonRealizarCompraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_form_botonRealizarCompraActionPerformed
@@ -292,18 +283,31 @@ public class AltaCompra extends javax.swing.JDialog {
         } catch (ParseException ex) {
             Logger.getLogger(AltaCompra.class.getName()).log(Level.SEVERE, null, ex);
         }
-        Compras compraAgregar = new Compras(date, null);
         
         //ACA HAY QUE SEGUIR
         //ACA HAY QUE SEGUIR
         //ACA HAY QUE SEGUIR
         //ACA HAY QUE SEGUIR
         //ACA HAY QUE SEGUIR
+        try {
+            ControladoraCompras.agregarCompra(date, null);
+        } catch (InvalidParameterException | StorageException ex) {
+            Logger.getLogger(AltaCompra.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
-        
+        List<Compras> c = null;
+        try {
+            c = ControladoraCompras.getCompras();
+        } catch (StorageException ex) {
+            Logger.getLogger(AltaCompra.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        int ultimoIndex = c.lastIndexOf(c),
+            idCompra = c.get(ultimoIndex).getIdCompra();
         
         Set<Detalles> setDetalles = new HashSet<>();
         Detalles detail = new Detalles();
+        DetallesId dID = new DetallesId(productoAgregar.getIdProducto(),idCompra);
+        
         
         for(int j = 0; j<modelo.getRowCount();j++){
             for(int i = 0; i<modelo.getColumnCount(); i++){
@@ -320,7 +324,7 @@ public class AltaCompra extends javax.swing.JDialog {
     //Boton de agregar productos a la tabla de compras.
     private void form_botonAgregarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_form_botonAgregarProductoActionPerformed
         //Checkeo de todas las variables a ingresar a la compra.
-        boolean error = checkearVariables();
+        boolean error = ControladoraAltaCompra.validarDatosAltaCompra(form_comboProducto, form_comboProveedor, form_cantidad, form_precio);
         if (!error){
             //Agregar los valores a la tabla.
             DefaultTableModel modelo = (DefaultTableModel) form_tablaProductos.getModel();
@@ -338,43 +342,7 @@ public class AltaCompra extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_form_botonAgregarProductoActionPerformed
 
-    //Checkeo de valores correctos de las variables, retorna el boolean
-    public boolean checkearVariables(){
-        boolean error = false;
-        if(form_comboProducto.getSelectedItem().toString().equals("Seleccionar...")){
-            JOptionPane.showMessageDialog(null,"Por favor, seleccione un producto a agregar en la compra.","Error!",JOptionPane.WARNING_MESSAGE);
-            error = true;
-        }
-        if(form_comboProveedor.getSelectedItem().toString().equals("Seleccionar...")){
-            JOptionPane.showMessageDialog(null,"Por favor, seleccione el proveedor del producto.","Error!",JOptionPane.WARNING_MESSAGE);
-            error = true;
-        }
-        if(form_cantidad.getText().isEmpty()){
-            JOptionPane.showMessageDialog(null,"Por favor, ingrese la cantidad comprada del producto.","Error!",JOptionPane.WARNING_MESSAGE);
-            error = true;
-        }
-        else{
-            try{
-                Integer.parseInt(form_cantidad.getText());
-            }catch(NumberFormatException e){
-                JOptionPane.showMessageDialog(null,"Por favor, ingrese un valor valido para la cantidad.","Error!",JOptionPane.WARNING_MESSAGE);
-                error = true;
-            }
-        }
-        if(form_precio.getText().isEmpty()){
-            JOptionPane.showMessageDialog(null,"Por favor, ingrese el precio del producto.","Error!",JOptionPane.WARNING_MESSAGE);
-            error = true;
-        }
-        else{
-            try{
-                Float.parseFloat(form_precio.getText());
-            }catch(NumberFormatException e){
-                JOptionPane.showMessageDialog(null,"Por favor, ingrese un valor valido para el precio.","Error!",JOptionPane.WARNING_MESSAGE);
-                error = true;
-            }
-        }
-        return error;
-    }
+    
     
     /**
      * @param args the command line arguments

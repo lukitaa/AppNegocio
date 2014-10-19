@@ -5,6 +5,7 @@
  */
 package negocio.Controladoras;
 
+
 /**
  *
  * @author usuario
@@ -35,4 +36,5 @@ public abstract class Controladora {
         l = (password != null) ? password.length() : 0;
         return (!emptyOrWhiteSpace(password) && l >= minL && l <= maxL);
     }
+    
 }
