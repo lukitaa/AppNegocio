@@ -7,9 +7,7 @@ package negocio.Controladoras;
 
 import java.util.List;
 import java.util.Set;
-import negocio.DAO.ProductosDaoImpl;
 import negocio.DAO.ProveedoresDaoImpl;
-import negocio.Entidades.Productos;
 import negocio.Entidades.Proveedores;
 import negocio.Hibernate.HibernateUtil;
 import org.hibernate.HibernateException;
@@ -21,7 +19,7 @@ import org.hibernate.Session;
  */
 public class ControladoraProveedores extends ControladoraMedia {
     
-    public static Proveedores agregarProveedor(String proveedor,String telefono, String mail,Set productos) throws InvalidParameterException, StorageException {
+    public static Proveedores agregarProveedor(String proveedor,String telefono, String mail) throws InvalidParameterException, StorageException {
         if (!validUsername(proveedor))
             throw new InvalidParameterException("El nombre del proveedor ingresado es invalido.");
         if (!validUsername(telefono))
@@ -29,7 +27,7 @@ public class ControladoraProveedores extends ControladoraMedia {
         if (!validUsername(mail))
             throw new InvalidParameterException("El mail ingresado es invalido.");
         
-        Proveedores p = new Proveedores(proveedor, telefono, mail,productos);
+        Proveedores p = new Proveedores(proveedor, telefono, mail);
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
             session.beginTransaction();

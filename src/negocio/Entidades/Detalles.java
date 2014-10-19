@@ -1,5 +1,5 @@
 package negocio.Entidades;
-// Generated 15/10/2014 10:44:15 by Hibernate Tools 4.3.1
+// Generated 19/10/2014 12:45:40 by Hibernate Tools 4.3.1
 
 
 
@@ -9,35 +9,33 @@ package negocio.Entidades;
 public class Detalles  implements java.io.Serializable {
 
 
-     private DetallesId id;
+     private Integer idDetalle;
      private Compras compras;
      private Productos productos;
-     private Float total;
+     private Float precio;
      private Integer cantidad;
 
     public Detalles() {
     }
 
 	
-    public Detalles(DetallesId id, Compras compras, Productos productos) {
-        this.id = id;
+    public Detalles(Compras compras, Productos productos) {
         this.compras = compras;
         this.productos = productos;
     }
-    public Detalles(DetallesId id, Compras compras, Productos productos, Float total, Integer cantidad) {
-       this.id = id;
+    public Detalles(Compras compras, Productos productos, Float precio, Integer cantidad) {
        this.compras = compras;
        this.productos = productos;
-       this.total = total;
+       this.precio = precio;
        this.cantidad = cantidad;
     }
    
-    public DetallesId getId() {
-        return this.id;
+    public Integer getIdDetalle() {
+        return this.idDetalle;
     }
     
-    public void setId(DetallesId id) {
-        this.id = id;
+    public void setIdDetalle(Integer idDetalle) {
+        this.idDetalle = idDetalle;
     }
     public Compras getCompras() {
         return this.compras;
@@ -53,12 +51,12 @@ public class Detalles  implements java.io.Serializable {
     public void setProductos(Productos productos) {
         this.productos = productos;
     }
-    public Float getTotal() {
-        return this.total;
+    public Float getPrecio() {
+        return this.precio;
     }
     
-    public void setTotal(Float total) {
-        this.total = total;
+    public void setPrecio(Float total) {
+        this.precio = total;
     }
     public Integer getCantidad() {
         return this.cantidad;

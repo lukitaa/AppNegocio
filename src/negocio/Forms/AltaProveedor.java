@@ -127,7 +127,7 @@ public class AltaProveedor extends javax.swing.JDialog {
         boolean error = true;
         //Agregar el proveedor en la BD
         try {
-            ControladoraProveedores.agregarProveedor(proveedor, telefono, mail, null);
+            ControladoraProveedores.agregarProveedor(proveedor, telefono, mail);
             error = false;
         } catch (InvalidParameterException | StorageException ex) {
             Logger.getLogger(AltaProveedor.class.getName()).log(Level.SEVERE, null, ex);

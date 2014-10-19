@@ -5,6 +5,9 @@
  */
 package negocio.Controladoras;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -13,6 +16,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import negocio.Entidades.Productos;
 import negocio.Entidades.Proveedores;
+import negocio.Forms.AltaCompra;
+import javax.swing.JFormattedTextField;
+import java.util.Date;
+import negocio.Entidades.Compras;
 
 /**
  *
@@ -76,5 +83,67 @@ public class ControladoraAltaCompra {
             proveedores.addItem(p.getProveedor());
         for(Productos p : listaProductos)
             producto.addItem(p.getProducto());
+    }
+    
+    public static Date parsearFecha(JFormattedTextField fecha){
+        Date date = null;
+        try {
+            DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+            date = formatter.parse(fecha.getText());
+        } catch (ParseException ex) {
+            Logger.getLogger(AltaCompra.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null,"La fecha ingresada no es valida, esta debe ser del formato: dd/MM/yyyy","Error!",JOptionPane.WARNING_MESSAGE);
+        }
+        return date;
+    }
+    
+    public static Compras obtenerUltimaCompra(){
+        Compras ultimaCompra = null;
+        try {
+            List<Compras> listaCompras = ControladoraCompras.getCompras();
+            int ultimoAux = listaCompras.lastIndexOf(listaCompras);
+            ultimaCompra = listaCompras.get(ultimoAux);
+        } catch (StorageException ex) {
+            Logger.getLogger(AltaCompra.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return ultimaCompra;
+    }
+    
+    public static void completarComboProveedoresSegunProducto(JComboBox comboProveedores,String productoACorroborar){
+        comboProveedores.removeAllItems();
+        try {
+            List<Proveedores> listaProv = ControladoraMedia.getProveedores();
+            List<Productos> listaProd = ControladoraMedia.getProductos();
+            Productos auxProd = null;
+            for(Productos prod : listaProd){
+                if(prod.getProducto().equals(productoACorroborar))
+                    auxProd = prod;
+            }
+            for(Proveedores prov : listaProv){
+                if(auxProd.getIdProveedor() == prov.getIdProveedor())
+                    comboProveedores.addItem(prov.getProveedor());
+            }
+        } catch (StorageException ex) {
+            Logger.getLogger(ControladoraAltaCompra.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public static void completarComboProductosSegunProveedor(JComboBox comboProductos,String proveedorACorroborar){
+        comboProductos.removeAllItems();
+        try {
+            List<Proveedores> listaProv = ControladoraMedia.getProveedores();
+            List<Productos> listaProd = ControladoraMedia.getProductos();
+            Proveedores auxProv = null;
+            for(Proveedores prov : listaProv){
+                if(prov.getProveedor().equals(proveedorACorroborar))
+                    auxProv = prov;
+            }
+            for(Productos prod : listaProd){
+                if(auxProv.getIdProveedor() == prod.getIdProveedor())
+                    comboProductos.addItem(prod.getProducto());
+            }
+        } catch (StorageException ex) {
+            Logger.getLogger(ControladoraAltaCompra.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

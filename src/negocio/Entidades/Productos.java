@@ -1,5 +1,5 @@
 package negocio.Entidades;
-// Generated 15/10/2014 10:44:15 by Hibernate Tools 4.3.1
+// Generated 19/10/2014 12:45:40 by Hibernate Tools 4.3.1
 
 
 import java.util.HashSet;
@@ -12,26 +12,26 @@ public class Productos  implements java.io.Serializable {
 
 
      private Integer idProducto;
-     private Proveedores proveedores;
      private String producto;
      private int stock;
      private Float precio;
+     private int idProveedor;
      private Set detalleses = new HashSet(0);
 
     public Productos() {
     }
 
 	
-    public Productos(Proveedores proveedores, String producto, int stock) {
-        this.proveedores = proveedores;
+    public Productos(String producto, int stock, int idProveedor) {
         this.producto = producto;
         this.stock = stock;
+        this.idProveedor = idProveedor;
     }
-    public Productos(Proveedores proveedores, String producto, int stock, Float precio, Set detalleses) {
-       this.proveedores = proveedores;
+    public Productos(String producto, int stock, Float precio, int idProveedor, Set detalleses) {
        this.producto = producto;
        this.stock = stock;
        this.precio = precio;
+       this.idProveedor = idProveedor;
        this.detalleses = detalleses;
     }
    
@@ -41,13 +41,6 @@ public class Productos  implements java.io.Serializable {
     
     public void setIdProducto(Integer idProducto) {
         this.idProducto = idProducto;
-    }
-    public Proveedores getProveedores() {
-        return this.proveedores;
-    }
-    
-    public void setProveedores(Proveedores proveedores) {
-        this.proveedores = proveedores;
     }
     public String getProducto() {
         return this.producto;
@@ -69,6 +62,13 @@ public class Productos  implements java.io.Serializable {
     
     public void setPrecio(Float precio) {
         this.precio = precio;
+    }
+    public int getIdProveedor() {
+        return this.idProveedor;
+    }
+    
+    public void setIdProveedor(int idProveedor) {
+        this.idProveedor = idProveedor;
     }
     public Set getDetalleses() {
         return this.detalleses;

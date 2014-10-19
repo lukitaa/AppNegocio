@@ -6,12 +6,10 @@
 package negocio.Forms;
 
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -20,14 +18,11 @@ import javax.swing.table.DefaultTableModel;
 import negocio.Controladoras.ControladoraAltaCompra;
 import negocio.Controladoras.ControladoraCompras;
 import negocio.Controladoras.ControladoraDetalles;
-import negocio.Controladoras.ControladoraMedia;
 import negocio.Controladoras.ControladoraProductos;
 import negocio.Controladoras.InvalidParameterException;
 import negocio.Controladoras.StorageException;
 import negocio.Entidades.Compras;
 import negocio.Entidades.Detalles;
-import negocio.Entidades.DetallesId;
-import negocio.Entidades.Proveedores;
 import negocio.Entidades.Productos;
 
 /**
@@ -37,12 +32,15 @@ import negocio.Entidades.Productos;
 public class AltaCompra extends javax.swing.JDialog {
 
     float total = 0;
+    List<Detalles> listaDetalles = null;
     /**
      * Creates new form AltaCompra
      */
     public AltaCompra(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        //Inicializar la lista de detalles.
+        listaDetalles = new ArrayList();
         //Seteo de los valores de las filas de la tabla en el centro
         DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
         renderer.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
@@ -124,8 +122,18 @@ public class AltaCompra extends javax.swing.JDialog {
         });
 
         form_comboProveedor.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
+        form_comboProveedor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                form_comboProveedorActionPerformed(evt);
+            }
+        });
 
         form_comboProducto.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
+        form_comboProducto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                form_comboProductoActionPerformed(evt);
+            }
+        });
 
         form_tablaProductos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -153,7 +161,7 @@ public class AltaCompra extends javax.swing.JDialog {
         jScrollPane1.setViewportView(form_tablaProductos);
 
         form_botonAgregarProducto.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
-        form_botonAgregarProducto.setText("Agregar productos a la compra");
+        form_botonAgregarProducto.setText("Agregar producto a la compra");
         form_botonAgregarProducto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 form_botonAgregarProductoActionPerformed(evt);
@@ -244,8 +252,10 @@ public class AltaCompra extends javax.swing.JDialog {
 
     //Evento en el que gana el foco el form para completar los combos y la fecha actual.
     private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
+        //Resetear la lista de detalles, en caso de que la ventana se volviera a abrir para que no queden guardados los antiguos datos.
+        listaDetalles = null;
+        //Completar los combos con los productos y los proveedores.
         if(form_comboProducto.getItemCount() <= 0 && form_comboProveedor.getItemCount() <= 0){
-            //Completar los combos con los productos y los proveedores.
             try{
                 ControladoraAltaCompra.completarComboBoxDeProductosYProveedores(form_comboProducto, form_comboProveedor);
             } catch (StorageException ex) {
@@ -259,73 +269,47 @@ public class AltaCompra extends javax.swing.JDialog {
         form_fecha.setText(dateFormat.format(date));
     }//GEN-LAST:event_formWindowGainedFocus
     
+    
+    //ACA HAY QUE SEGUIR
+    //ACA HAY QUE SEGUIR
+    //ACA HAY QUE SEGUIR
+    //ACA HAY QUE SEGUIR
+    //ACA HAY QUE SEGUIR
     //Boton para realizar la compra y guardarla en la BD
     private void form_botonRealizarCompraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_form_botonRealizarCompraActionPerformed
-        //TODO: CODE HERE
-        DefaultTableModel modelo = (DefaultTableModel) form_tablaProductos.getModel();
-        //Generar el producto necesario para el detalle, a partir del producto seleccionado.
-        Productos productoAgregar = null;
-        List<Productos> listaProd;
-        try {
-            listaProd = ControladoraProductos.getProductos();
-            for(Productos p : listaProd){
-                if(p.getProducto().equals(form_comboProducto.getSelectedItem().toString()))
-                    productoAgregar = p;
-            }
-        } catch (StorageException ex) {
-            Logger.getLogger(AltaCompra.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        //Generar la compra necesario para el detalle, a partir de la fecha seleccionada.
-        Date date = null;
-        try {
-            DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-            date = formatter.parse(form_fecha.getText());
-        } catch (ParseException ex) {
-            Logger.getLogger(AltaCompra.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        //ACA HAY QUE SEGUIR
-        //ACA HAY QUE SEGUIR
-        //ACA HAY QUE SEGUIR
-        //ACA HAY QUE SEGUIR
-        //ACA HAY QUE SEGUIR
+        //Verificar si la fecha ingresada es correcta, y guardarla para utilizar luego en la compra
+        Date date = ControladoraAltaCompra.parsearFecha(form_fecha);
+        //Agregar una nueva compra en la BD con la fecha ingresada, para obtener el ID necesario para los detalles.
         try {
             ControladoraCompras.agregarCompra(date, null);
         } catch (InvalidParameterException | StorageException ex) {
             Logger.getLogger(AltaCompra.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null,"Se produjo un error al intentar guardar la compra.","Error!",JOptionPane.WARNING_MESSAGE);
         }
-        
-        List<Compras> c = null;
-        try {
-            c = ControladoraCompras.getCompras();
-        } catch (StorageException ex) {
-            Logger.getLogger(AltaCompra.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        int ultimoIndex = c.lastIndexOf(c),
-            idCompra = c.get(ultimoIndex).getIdCompra();
-        
-        Set<Detalles> setDetalles = new HashSet<>();
-        Detalles detail = new Detalles();
-        DetallesId dID = new DetallesId(productoAgregar.getIdProducto(),idCompra);
-        
-        
-        for(int j = 0; j<modelo.getRowCount();j++){
-            for(int i = 0; i<modelo.getColumnCount(); i++){
-                Integer cant = Integer.valueOf(form_cantidad.getText());
-                Float totalProd = Float.valueOf(form_precio.getText());
-                listaDetalles.add(new Detalles(null, null, productoAgregar, totalProd, cant));
+        //Obtener la ultima compra, realizada anteriormente, para agregar en el detalle.
+        Compras ultimaCompra = ControladoraAltaCompra.obtenerUltimaCompra();
+        //Finalmente, realizar la compra de los detalles correspondientes.
+        if(ultimaCompra != null){
+            for(Detalles d : listaDetalles){
+                d.setCompras(ultimaCompra);
+                try {
+                    ControladoraDetalles.agregarDetalle(d.getCompras(),d.getProductos(), (d.getPrecio() * d.getCantidad()), d.getCantidad());
+                } catch (InvalidParameterException | StorageException ex) {
+                    Logger.getLogger(AltaCompra.class.getName()).log(Level.SEVERE, null, ex);
+                    JOptionPane.showMessageDialog(null,"Se produjo un error al intentar guardar los detalles de la compra.","Error!",JOptionPane.WARNING_MESSAGE);
+                }
             }
         }
-        
-        //Detalles details = new Detalles(detailID, compras, productos, total, cantidad);
-        //Compras compra = new Compras(fecha, detalles);
+        JOptionPane.showMessageDialog(null,"Compra realizada correctamente.","Completado!",JOptionPane.PLAIN_MESSAGE);
     }//GEN-LAST:event_form_botonRealizarCompraActionPerformed
 
     //Boton de agregar productos a la tabla de compras.
     private void form_botonAgregarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_form_botonAgregarProductoActionPerformed
         //Checkeo de todas las variables a ingresar a la compra.
         boolean error = ControladoraAltaCompra.validarDatosAltaCompra(form_comboProducto, form_comboProveedor, form_cantidad, form_precio);
-        if (!error){
+        //Verificar si la fecha ingresada es correcta, y guardarla para utilizar luego en la compra
+        Date date = ControladoraAltaCompra.parsearFecha(form_fecha);
+        if (!error && date != null){
             //Agregar los valores a la tabla.
             DefaultTableModel modelo = (DefaultTableModel) form_tablaProductos.getModel();
             total += Float.valueOf(form_precio.getText()) * Integer.valueOf(form_cantidad.getText());
@@ -339,9 +323,52 @@ public class AltaCompra extends javax.swing.JDialog {
             modelo.addRow(data);
             form_tablaProductos.setModel(modelo);
             form_total.setText("Costo total de la compra: $" + String.valueOf(total) + ".");
+            
+            //Agregar el detalle a la lista, para luego agregar en la BD
+            agregarDetalleALista(form_comboProducto.getSelectedItem().toString(), form_precio.getText(), form_cantidad.getText());
         }
     }//GEN-LAST:event_form_botonAgregarProductoActionPerformed
 
+    
+    
+    
+    //ESTABA MIRANDO ESTA PARTE
+    //ESTABA MIRANDO ESTA PARTE
+    //ESTABA MIRANDO ESTA PARTE
+    //ESTABA MIRANDO ESTA PARTE
+    private void form_comboProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_form_comboProductoActionPerformed
+        if(!form_comboProducto.getSelectedItem().toString().equals("Seleccionar...")){
+            ControladoraAltaCompra.completarComboProveedoresSegunProducto(form_comboProveedor, form_comboProducto.getSelectedItem().toString());
+        }
+    }//GEN-LAST:event_form_comboProductoActionPerformed
+    //ESTABA MIRANDO ESTA PARTE
+    private void form_comboProveedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_form_comboProveedorActionPerformed
+        if(!form_comboProveedor.getSelectedItem().toString().equals("Seleccionar...")){
+            ControladoraAltaCompra.completarComboProductosSegunProveedor(form_comboProducto, form_comboProveedor.getSelectedItem().toString());
+        }
+    }//GEN-LAST:event_form_comboProveedorActionPerformed
+
+    //Funcion para agregar los valores en la lista de detalles, que luego se guardara en la BD
+    public void agregarDetalleALista(String nombreProducto, String precio, String cantidad){
+        //Obtener el producto elegido para agregar al detalle.
+        Productos prod = null;
+        List<Productos> listaProducto;
+        try {
+            listaProducto = ControladoraProductos.getProductos();
+            for(Productos p : listaProducto){
+                if(p.getProducto().equals(nombreProducto))
+                    prod = p;
+            }
+        } catch (StorageException ex) {
+            Logger.getLogger(AltaCompra.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        //Obtener el precio y la cantidad comprada.
+        float floatPrecio = Float.valueOf(precio);
+        int intCantidad = Integer.valueOf(cantidad);
+        //Agregar el detalle a la lista.
+        Detalles detail = new Detalles(null,prod, floatPrecio,intCantidad);
+        listaDetalles.add(detail);
+    }
     
     
     /**

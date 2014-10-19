@@ -210,6 +210,9 @@
           <Font name="Dialog" size="11" style="1"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="form_comboProveedorActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JComboBox" name="form_comboProducto">
       <Properties>
@@ -217,6 +220,9 @@
           <Font name="Dialog" size="11" style="1"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="form_comboProductoActionPerformed"/>
+      </Events>
     </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPane1">
       <AuxValues>
@@ -245,7 +251,7 @@
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Dialog" size="11" style="1"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Agregar productos a la compra"/>
+        <Property name="text" type="java.lang.String" value="Agregar producto a la compra"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="form_botonAgregarProductoActionPerformed"/>

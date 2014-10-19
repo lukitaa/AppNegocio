@@ -23,7 +23,7 @@ public class ControladoraProductos extends ControladoraMedia {
         if (!validUsername(producto))
             throw new InvalidParameterException("El nombre del producto ingresado es invalido.");
         
-        Productos p = new Productos(proveedor, producto, stock);
+        Productos p = new Productos(producto, stock,proveedor.getIdProveedor());
         p.setPrecio(precio);
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
@@ -82,7 +82,7 @@ public class ControladoraProductos extends ControladoraMedia {
             producto.setProducto(prod);
             producto.setStock(stock);
             producto.setPrecio(precio);
-            producto.setProveedores(proveedor);
+            producto.setIdProveedor(proveedor.getIdProveedor());
             // And now update the DB one
             new ProductosDaoImpl(session).update(producto);
             session.getTransaction().commit();

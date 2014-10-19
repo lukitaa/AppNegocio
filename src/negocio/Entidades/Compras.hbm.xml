@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 15/10/2014 10:44:16 by Hibernate Tools 4.3.1 -->
+<!-- Generated 19/10/2014 12:45:40 by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
-    <class name="negocio.Entidades.Compras" table="compras" catalog="negocio" optimistic-lock="version">
+    <class name="negocio.Entidades.Compras" table="compras" catalog="testing" optimistic-lock="version">
         <id name="idCompra" type="java.lang.Integer">
             <column name="IdCompra" />
             <generator class="identity" />

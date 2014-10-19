@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 15/10/2014 10:44:16 by Hibernate Tools 4.3.1 -->
+<!-- Generated 19/10/2014 12:45:40 by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
-    <class name="negocio.Entidades.Proveedores" table="proveedores" catalog="negocio" optimistic-lock="version">
+    <class name="negocio.Entidades.Proveedores" table="proveedores" catalog="testing" optimistic-lock="version">
         <id name="idProveedor" type="java.lang.Integer">
             <column name="IdProveedor" />
             <generator class="identity" />
@@ -17,11 +17,5 @@
         <property name="mail" type="string">
             <column name="Mail" length="200" />
         </property>
-        <set name="productoses" table="productos" inverse="true" lazy="true" fetch="select">
-            <key>
-                <column name="IdProveedor" not-null="true" />
-            </key>
-            <one-to-many class="negocio.Entidades.Productos" />
-        </set>
     </class>
 </hibernate-mapping>

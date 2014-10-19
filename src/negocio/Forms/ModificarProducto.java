@@ -176,7 +176,7 @@ public class ModificarProducto extends javax.swing.JDialog {
             productoMod = ControladoraProductos.getProduct(productoModificar.getIdProducto(),session);
             for(Proveedores p : prov){
                 form_proveedor.addItem(p.getProveedor());
-                if(p.getProveedor().equals(productoMod.getProveedores().getProveedor()))
+                if(p.getIdProveedor() == productoMod.getIdProveedor())
                     form_proveedor.setSelectedItem(p.getProveedor());
             }
             session.close();

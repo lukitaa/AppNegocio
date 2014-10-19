@@ -8,7 +8,6 @@ package negocio.Controladoras;
 import negocio.DAO.DetallesDaoImpl;
 import negocio.Entidades.Compras;
 import negocio.Entidades.Detalles;
-import negocio.Entidades.DetallesId;
 import negocio.Entidades.Productos;
 import negocio.Hibernate.HibernateUtil;
 import org.hibernate.HibernateException;
@@ -20,9 +19,9 @@ import org.hibernate.Session;
  */
 public class ControladoraDetalles extends ControladoraMedia {
     
-    public static Detalles agregarDetalle(DetallesId detallesId, Compras compras, Productos producto, float total, int cantidad) throws InvalidParameterException, StorageException {
+    public static Detalles agregarDetalle(Compras compras, Productos producto, float total, int cantidad) throws InvalidParameterException, StorageException {
         
-        Detalles p = new Detalles(detallesId, compras, producto, total, cantidad);
+        Detalles p = new Detalles(compras, producto, total, cantidad);
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
             session.beginTransaction();

@@ -1,5 +1,5 @@
 package negocio.Entidades;
-// Generated 15/10/2014 10:44:15 by Hibernate Tools 4.3.1
+// Generated 19/10/2014 12:45:40 by Hibernate Tools 4.3.1
 
 
 import java.util.Date;
