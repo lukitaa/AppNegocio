@@ -239,7 +239,7 @@ public class VistaCompras extends javax.swing.JDialog {
                     //Obtener el total de la compra.
                     auxTotal += d.getTotal() * d.getCantidad();
                 }
-                data[3] = String.valueOf(auxTotal);
+                data[3] = "$" + String.valueOf(auxTotal);
                 modelo.addRow(data);
                 form_tablaCompras.setModel(modelo);
                 }
