@@ -6,6 +6,7 @@
 package negocio.Controladoras;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 import negocio.DAO.ComprasDaoImpl;
 import negocio.Entidades.Compras;
@@ -52,6 +53,22 @@ public class ControladoraCompras extends ControladoraMedia {
                 session.close();
             }
             throw new StorageException("Error interno al intentar cargar la compra.");
+        }
+    }
+    
+    public static List<Compras> getCompras(Session session) throws StorageException{
+        try {
+            session.beginTransaction();
+            List<Compras> l = new ComprasDaoImpl(session).fetchAll();
+            session.getTransaction().commit();
+            session.close();
+            return l;
+        } catch (HibernateException e) {
+            if (session != null) {
+                session.getTransaction().rollback();
+                session.close();
+            }
+            throw new StorageException("Error al intentar cargar las compras.");
         }
     }
 }

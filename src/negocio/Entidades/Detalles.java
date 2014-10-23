@@ -12,7 +12,7 @@ public class Detalles  implements java.io.Serializable {
      private Integer idDetalle;
      private Compras compras;
      private Productos productos;
-     private Float precio;
+     private Float total;
      private Integer cantidad;
 
     public Detalles() {
@@ -23,10 +23,10 @@ public class Detalles  implements java.io.Serializable {
         this.compras = compras;
         this.productos = productos;
     }
-    public Detalles(Compras compras, Productos productos, Float precio, Integer cantidad) {
+    public Detalles(Compras compras, Productos productos, Float total, Integer cantidad) {
        this.compras = compras;
        this.productos = productos;
-       this.precio = precio;
+       this.total = total;
        this.cantidad = cantidad;
     }
    
@@ -51,12 +51,12 @@ public class Detalles  implements java.io.Serializable {
     public void setProductos(Productos productos) {
         this.productos = productos;
     }
-    public Float getPrecio() {
-        return this.precio;
+    public Float getTotal() {
+        return this.total;
     }
     
-    public void setPrecio(Float total) {
-        this.precio = total;
+    public void setTotal(Float total) {
+        this.total = total;
     }
     public Integer getCantidad() {
         return this.cantidad;

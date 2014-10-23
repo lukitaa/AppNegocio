@@ -20,7 +20,6 @@ import org.hibernate.Session;
 public class ControladoraDetalles extends ControladoraMedia {
     
     public static Detalles agregarDetalle(Compras compras, Productos producto, float total, int cantidad) throws InvalidParameterException, StorageException {
-        
         Detalles p = new Detalles(compras, producto, total, cantidad);
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
@@ -34,7 +33,7 @@ public class ControladoraDetalles extends ControladoraMedia {
                 session.getTransaction().rollback();
                 session.close();
             }
-            throw new StorageException("Error interno al intentar guardar el producto.");
+            throw new StorageException("Error interno al intentar guardar el detalle.");
         }
     }
     

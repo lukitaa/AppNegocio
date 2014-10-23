@@ -14,8 +14,8 @@
         <many-to-one name="productos" class="negocio.Entidades.Productos" fetch="select">
             <column name="IdProducto" not-null="true" />
         </many-to-one>
-        <property name="precio" type="java.lang.Float">
-            <column name="Precio" precision="7" />
+        <property name="total" type="java.lang.Float">
+            <column name="Total" precision="7" />
         </property>
         <property name="cantidad" type="java.lang.Integer">
             <column name="Cantidad" />

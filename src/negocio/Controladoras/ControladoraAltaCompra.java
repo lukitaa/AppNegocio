@@ -21,6 +21,7 @@ import javax.swing.JFormattedTextField;
 import java.util.Date;
 import javax.swing.DefaultComboBoxModel;
 import negocio.Entidades.Compras;
+import org.hibernate.Session;
 
 /**
  *
@@ -103,11 +104,24 @@ public class ControladoraAltaCompra {
         Compras ultimaCompra = null;
         try {
             List<Compras> listaCompras = ControladoraCompras.getCompras();
-            int ultimoAux = listaCompras.lastIndexOf(listaCompras);
+            int ultimoAux = listaCompras.size() - 1;
             ultimaCompra = listaCompras.get(ultimoAux);
         } catch (StorageException ex) {
-            Logger.getLogger(AltaCompra.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null,"Error al intentar obtener la ultima compra.","Error!",JOptionPane.WARNING_MESSAGE);
+            Logger.getLogger(AltaCompra.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return ultimaCompra;
+    }
+    
+    public static Compras obtenerUltimaCompra(Session session){
+        Compras ultimaCompra = null;
+        try {
+            List<Compras> listaCompras = ControladoraCompras.getCompras(session);
+            int ultimoAux = listaCompras.size() - 1;
+            ultimaCompra = listaCompras.get(ultimoAux);
+        } catch (StorageException ex) {
+            JOptionPane.showMessageDialog(null,"Error al intentar obtener la ultima compra.","Error!",JOptionPane.WARNING_MESSAGE);
+            Logger.getLogger(AltaCompra.class.getName()).log(Level.SEVERE, null, ex);
         }
         return ultimaCompra;
     }
