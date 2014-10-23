@@ -6,6 +6,7 @@
 package negocio.Forms;
 
 import java.awt.Frame;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -14,8 +15,10 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import negocio.Controladoras.ControladoraCompras;
 import negocio.Controladoras.ControladoraMedia;
+import negocio.Controladoras.ControladoraProveedores;
 import negocio.Controladoras.StorageException;
 import negocio.Entidades.Compras;
+import negocio.Entidades.Detalles;
 import negocio.Entidades.Productos;
 import negocio.Entidades.Proveedores;
 import negocio.Hibernate.HibernateUtil;
@@ -28,6 +31,7 @@ import org.hibernate.Session;
 public class VistaCompras extends javax.swing.JDialog {
 
     Frame framePrincipal = null;
+    boolean alreadyShowed = false;
     /**
      * Creates new form VistaCompras
      */
@@ -85,14 +89,14 @@ public class VistaCompras extends javax.swing.JDialog {
 
             },
             new String [] {
-                "ID Compra", "Fecha", "Proveedor", "Productos", "Cantidad"
+                "ID Compra", "Fecha", "Proveedor", "Total"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -186,68 +190,64 @@ public class VistaCompras extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    //Completar la tabla con las compras.
-        
-        //COMPLETAR ACA COMPLETAR ACA COMPLETAR ACA
-        //COMPLETAR ACA COMPLETAR ACA COMPLETAR ACA
-        //COMPLETAR ACA COMPLETAR ACA COMPLETAR ACA
-        //COMPLETAR ACA COMPLETAR ACA COMPLETAR ACA
-        //COMPLETAR ACA COMPLETAR ACA COMPLETAR ACA
-        //COMPLETAR ACA COMPLETAR ACA COMPLETAR ACA
-        
     //Evento cuando la ventana gana foco, completar la tabla con compras, el combo de productos y el de proveedores.
     private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
-        //Completar los combos de prod y prov.
-        List<Proveedores> prov = null;
-        List<Productos> prod = null;
-        try {
-            prov = ControladoraMedia.getProveedores();
-            prod = ControladoraMedia.getProductos();
-        } catch (StorageException ex) {
-            Logger.getLogger(VistaCompras.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(null,"Error al cargar los combos de productos y proveedores.","Error Vista Compras: formWindowGainedFocus!!",JOptionPane.WARNING_MESSAGE);
-        }
-        if(prov != null && prod != null)
-            completarCombo(prov,prod);
-        
-
-        //COMPLETANDO ESTA PARTE
-        //COMPLETANDO ESTA PARTE
-        //COMPLETANDO ESTA PARTE
-        //COMPLETANDO ESTA PARTE
-        //COMPLETANDO ESTA PARTE
-        //COMPLETANDO ESTA PARTE
-        //COMPLETANDO ESTA PARTE
-        
-        //Completar la tabla con todas las compras realizadas.
-        List<Compras> listaCompras = null;
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        try {
-            listaCompras = ControladoraCompras.getCompras(session);
-        } catch (StorageException ex) {
-            Logger.getLogger(VistaCompras.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(null,"Error al cargar la lista de compras.","Error Vista Compras: formWindowGainedFocus!",JOptionPane.WARNING_MESSAGE);
-        }
-        if(listaCompras != null){
-            for(Compras c : listaCompras){
-                //Agregar los valores a la tabla.
-            DefaultTableModel modelo = (DefaultTableModel) form_tablaCompras.getModel();
-            String[] data = new String[5];
-            data[0] = c.getIdCompra().toString();
-            data[1] = c.getFecha().toString();
-            modelo.addRow(data);
-            form_tablaCompras.setModel(modelo);
+        if(!alreadyShowed){
+            //Completar los combos de prod y prov.
+            List<Proveedores> prov = null;
+            List<Productos> prod = null;
+            try {
+                prov = ControladoraMedia.getProveedores();
+                prod = ControladoraMedia.getProductos();
+            } catch (StorageException ex) {
+                Logger.getLogger(VistaCompras.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null,"Error al cargar los combos de productos y proveedores.","Error Vista Compras: formWindowGainedFocus!!",JOptionPane.WARNING_MESSAGE);
             }
+            if(prov != null && prod != null)
+                completarCombo(prov,prod);
+            //Completar la tabla con todas las compras realizadas.
+            List<Compras> listaCompras = null;
+            Session session = HibernateUtil.getSessionFactory().openSession();
+            try {
+                listaCompras = ControladoraCompras.getCompras(session);
+            } catch (StorageException ex) {
+                Logger.getLogger(VistaCompras.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null,"Error al cargar la lista de compras.","Error Vista Compras: formWindowGainedFocus!",JOptionPane.WARNING_MESSAGE);
+            }
+            if(listaCompras != null){
+                //Agregar los valores a la tabla.
+                for(Compras c : listaCompras){
+                DefaultTableModel modelo = (DefaultTableModel) form_tablaCompras.getModel();
+                String[] data = new String[5];
+                data[0] = c.getIdCompra().toString();
+                data[1] = c.getFecha().toString();
+                Iterator it = c.getDetalleses().iterator();
+                boolean foundName = false;
+                int auxTotal = 0;
+                while(it.hasNext()){
+                    Detalles d = (Detalles) it.next();
+                    //Obtener el nombre del proveedor de la compra.
+                    if(!foundName){
+                        int aux = d.getProductos().getIdProveedor();
+                        try {
+                            data[2] = ControladoraProveedores.getProveedor(aux).getProveedor();
+                        } catch (StorageException ex) {
+                            Logger.getLogger(VistaCompras.class.getName()).log(Level.SEVERE, null, ex);
+                            JOptionPane.showMessageDialog(null,"Error al intentar cargar el nombre del proveedor a la tabla.","Error Vista Compras: formWindowGainedFocus!",JOptionPane.WARNING_MESSAGE);
+                        }
+                    }
+                    //Obtener el total de la compra.
+                    auxTotal += d.getTotal() * d.getCantidad();
+                }
+                data[3] = String.valueOf(auxTotal);
+                modelo.addRow(data);
+                form_tablaCompras.setModel(modelo);
+                }
+            }
+            session.close();
+            alreadyShowed = true;
         }
-        
-        session.close();
     }//GEN-LAST:event_formWindowGainedFocus
-
-    //Boton para mostrar el form de agregar compra
-    private void form_realizarNuevaCompraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_form_realizarNuevaCompraActionPerformed
-        AltaCompra compra = new AltaCompra(framePrincipal, rootPaneCheckingEnabled);
-        compra.setVisible(true);
-    }//GEN-LAST:event_form_realizarNuevaCompraActionPerformed
 
     //Funcion para completar los combobox con los valores de proveedores y productos.
     public void completarCombo(List<Proveedores> prov, List<Productos> prod){
@@ -258,6 +258,14 @@ public class VistaCompras extends javax.swing.JDialog {
         for(Productos p : prod)
             form_comboVerComprasProducto.addItem(p.getProducto());
     }
+    
+    //Boton para mostrar el form de agregar compra
+    private void form_realizarNuevaCompraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_form_realizarNuevaCompraActionPerformed
+        //Mostrar el nuevo formulario.
+        AltaCompra compra = new AltaCompra(framePrincipal, rootPaneCheckingEnabled);
+        compra.setVisible(true);
+    }//GEN-LAST:event_form_realizarNuevaCompraActionPerformed
+
     
     /**
      * @param args the command line arguments
