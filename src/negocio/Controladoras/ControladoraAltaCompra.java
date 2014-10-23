@@ -19,6 +19,7 @@ import negocio.Entidades.Proveedores;
 import negocio.Forms.AltaCompra;
 import javax.swing.JFormattedTextField;
 import java.util.Date;
+import javax.swing.DefaultComboBoxModel;
 import negocio.Entidades.Compras;
 
 /**
@@ -66,7 +67,7 @@ public class ControladoraAltaCompra {
     }
     
     //Funcion para completar los combobox con los valores de proveedores y productos.
-    public static void completarComboBoxDeProductosYProveedores(JComboBox producto, JComboBox proveedores) throws StorageException{
+    public static void completarComboBoxDeProductosYProveedores(JComboBox producto, JComboBox proveedores) {
         //Obtener todos los productos y proveedores.
         List<Proveedores> listaProveedores = null;
         List<Productos> listaProductos = null;
@@ -74,7 +75,8 @@ public class ControladoraAltaCompra {
             listaProductos = ControladoraMedia.getProductos();
             listaProveedores = ControladoraMedia.getProveedores();
         } catch (StorageException ex) {
-            throw new StorageException("Error al intentar cargar los productos y proveedores en el combo.");
+            Logger.getLogger(AltaCompra.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null,"Error al completar los combos de productos y proveedores.","Error!",JOptionPane.WARNING_MESSAGE);
         }
         //Completar los comboBox con los valores obtenidos anteriormente.
         producto.addItem("Seleccionar...");
@@ -105,45 +107,37 @@ public class ControladoraAltaCompra {
             ultimaCompra = listaCompras.get(ultimoAux);
         } catch (StorageException ex) {
             Logger.getLogger(AltaCompra.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null,"Error al intentar obtener la ultima compra.","Error!",JOptionPane.WARNING_MESSAGE);
         }
         return ultimaCompra;
     }
     
-    public static void completarComboProveedoresSegunProducto(JComboBox comboProveedores,String productoACorroborar){
-        comboProveedores.removeAllItems();
-        try {
-            List<Proveedores> listaProv = ControladoraMedia.getProveedores();
-            List<Productos> listaProd = ControladoraMedia.getProductos();
-            Productos auxProd = null;
-            for(Productos prod : listaProd){
-                if(prod.getProducto().equals(productoACorroborar))
-                    auxProd = prod;
-            }
-            for(Proveedores prov : listaProv){
-                if(auxProd.getIdProveedor() == prov.getIdProveedor())
-                    comboProveedores.addItem(prov.getProveedor());
-            }
-        } catch (StorageException ex) {
-            Logger.getLogger(ControladoraAltaCompra.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
     public static void completarComboProductosSegunProveedor(JComboBox comboProductos,String proveedorACorroborar){
+        //DefaultComboBoxModel model = (DefaultComboBoxModel) comboProductos.getModel();
+        //model.removeAllElements();
         comboProductos.removeAllItems();
         try {
             List<Proveedores> listaProv = ControladoraMedia.getProveedores();
             List<Productos> listaProd = ControladoraMedia.getProductos();
             Proveedores auxProv = null;
-            for(Proveedores prov : listaProv){
-                if(prov.getProveedor().equals(proveedorACorroborar))
-                    auxProv = prov;
+            if(!proveedorACorroborar.equals("Seleccionar...")){
+                for(Proveedores prov : listaProv){
+                    if(prov.getProveedor().equals(proveedorACorroborar))
+                        auxProv = prov;
+                }
+                for(Productos prod : listaProd){
+                    if(auxProv.getIdProveedor() == prod.getIdProveedor())
+                        comboProductos.addItem(prod.getProducto());
+                }
             }
-            for(Productos prod : listaProd){
-                if(auxProv.getIdProveedor() == prod.getIdProveedor())
-                    comboProductos.addItem(prod.getProducto());
+            else{
+                comboProductos.addItem("Seleccionar...");
+                for(Productos prod : listaProd)
+                        comboProductos.addItem(prod.getProducto());
             }
         } catch (StorageException ex) {
             Logger.getLogger(ControladoraAltaCompra.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null,"Error al intentar completar el combo de productos segun el proveedor elegido.","Error!",JOptionPane.WARNING_MESSAGE);
         }
     }
 }

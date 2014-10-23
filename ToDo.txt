@@ -1,0 +1,4 @@
+TODO List:
+	-Comportamiento de los eventos de los combos de
+	Proveedor y Productos en AltaCompra (Form).
+	-Completar el alta de la compra.
