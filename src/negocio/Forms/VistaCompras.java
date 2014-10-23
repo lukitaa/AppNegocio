@@ -9,11 +9,17 @@ import java.awt.Frame;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import negocio.Controladoras.ControladoraCompras;
 import negocio.Controladoras.ControladoraMedia;
 import negocio.Controladoras.StorageException;
+import negocio.Entidades.Compras;
 import negocio.Entidades.Productos;
 import negocio.Entidades.Proveedores;
+import negocio.Hibernate.HibernateUtil;
+import org.hibernate.Session;
 
 /**
  *
@@ -180,21 +186,17 @@ public class VistaCompras extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    //Completar la tabla con las compras.
+        
+        //COMPLETAR ACA COMPLETAR ACA COMPLETAR ACA
+        //COMPLETAR ACA COMPLETAR ACA COMPLETAR ACA
+        //COMPLETAR ACA COMPLETAR ACA COMPLETAR ACA
+        //COMPLETAR ACA COMPLETAR ACA COMPLETAR ACA
+        //COMPLETAR ACA COMPLETAR ACA COMPLETAR ACA
+        //COMPLETAR ACA COMPLETAR ACA COMPLETAR ACA
+        
     //Evento cuando la ventana gana foco, completar la tabla con compras, el combo de productos y el de proveedores.
     private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
-        //Completar la tabla con las compras.
-        
-        
-        //COMPLETAR ACA COMPLETAR ACA COMPLETAR ACA
-        //COMPLETAR ACA COMPLETAR ACA COMPLETAR ACA
-        //COMPLETAR ACA COMPLETAR ACA COMPLETAR ACA
-        //COMPLETAR ACA COMPLETAR ACA COMPLETAR ACA
-        //COMPLETAR ACA COMPLETAR ACA COMPLETAR ACA
-        //COMPLETAR ACA COMPLETAR ACA COMPLETAR ACA
-        
-        
-        
-        
         //Completar los combos de prod y prov.
         List<Proveedores> prov = null;
         List<Productos> prod = null;
@@ -203,8 +205,42 @@ public class VistaCompras extends javax.swing.JDialog {
             prod = ControladoraMedia.getProductos();
         } catch (StorageException ex) {
             Logger.getLogger(VistaCompras.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null,"Error al cargar los combos de productos y proveedores.","Error Vista Compras: formWindowGainedFocus!!",JOptionPane.WARNING_MESSAGE);
         }
-        completarCombo(prov,prod);
+        if(prov != null && prod != null)
+            completarCombo(prov,prod);
+        
+
+        //COMPLETANDO ESTA PARTE
+        //COMPLETANDO ESTA PARTE
+        //COMPLETANDO ESTA PARTE
+        //COMPLETANDO ESTA PARTE
+        //COMPLETANDO ESTA PARTE
+        //COMPLETANDO ESTA PARTE
+        //COMPLETANDO ESTA PARTE
+        
+        //Completar la tabla con todas las compras realizadas.
+        List<Compras> listaCompras = null;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            listaCompras = ControladoraCompras.getCompras(session);
+        } catch (StorageException ex) {
+            Logger.getLogger(VistaCompras.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null,"Error al cargar la lista de compras.","Error Vista Compras: formWindowGainedFocus!",JOptionPane.WARNING_MESSAGE);
+        }
+        if(listaCompras != null){
+            for(Compras c : listaCompras){
+                //Agregar los valores a la tabla.
+            DefaultTableModel modelo = (DefaultTableModel) form_tablaCompras.getModel();
+            String[] data = new String[5];
+            data[0] = c.getIdCompra().toString();
+            data[1] = c.getFecha().toString();
+            modelo.addRow(data);
+            form_tablaCompras.setModel(modelo);
+            }
+        }
+        
+        session.close();
     }//GEN-LAST:event_formWindowGainedFocus
 
     //Boton para mostrar el form de agregar compra

@@ -9,7 +9,10 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -35,6 +38,7 @@ public class AltaCompra extends javax.swing.JDialog {
 
     float total = 0;
     List<Detalles> listaDetalles;
+    boolean error = false;
     /**
      * Creates new form AltaCompra
      */
@@ -260,33 +264,45 @@ public class AltaCompra extends javax.swing.JDialog {
         Date date = new Date();
         form_fecha.setText(dateFormat.format(date));
         //Eliminar de la tabla los valores de la compra que ya se ha realizado.
-        DefaultTableModel renderer = (DefaultTableModel) form_tablaProductos.getModel();
-        renderer.setRowCount(0);
+        if(!error){
+            DefaultTableModel renderer = (DefaultTableModel) form_tablaProductos.getModel();
+            renderer.setRowCount(0);
+        }
     }//GEN-LAST:event_formWindowGainedFocus
     
     
-    //ACA HAY QUE SEGUIR
-    //ACA HAY QUE SEGUIR
-    //ACA HAY QUE SEGUIR
-    //ACA HAY QUE SEGUIR
-    //ACA HAY QUE SEGUIR
     //Boton para realizar la compra y guardarla en la BD
     private void form_botonRealizarCompraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_form_botonRealizarCompraActionPerformed
+        error = false;
         //Verificar si la fecha ingresada es correcta, y guardarla para utilizar luego en la compra
         Date date = ControladoraAltaCompra.parsearFecha(form_fecha);
         //Agregar una nueva compra en la BD con la fecha ingresada, para obtener el ID necesario para los detalles.
-
         try {
             ControladoraCompras.agregarCompra(date, null);
         } catch (InvalidParameterException | StorageException ex) {
             JOptionPane.showMessageDialog(null,"Se produjo un error al intentar guardar la compra.","Error!",JOptionPane.WARNING_MESSAGE);
+            error = true;
             Logger.getLogger(AltaCompra.class.getName()).log(Level.SEVERE, null, ex);
         }
         //Obtener la ultima compra, realizada anteriormente, para agregar en el detalle.
         Session session = HibernateUtil.getSessionFactory().openSession();
         Compras ultimaCompra = ControladoraAltaCompra.obtenerUltimaCompra(session);
-        //Finalmente, realizar la compra de los detalles correspondientes.
-        boolean error = false;
+        //updatear los detalles de la compra, para luego mostrar cuando necesario. - - Don't know if this is really needed.
+        for(Detalles d : listaDetalles){
+            d.setCompras(ultimaCompra);
+            d.getProductos().setDetalleses(new HashSet<>(listaDetalles));
+            ultimaCompra.getDetalleses().add(d);
+        }
+        session.close();
+        //Updatear la compra con los detalles agregados.
+        try {
+            ControladoraCompras.updateCompra(ultimaCompra);
+        } catch (StorageException ex) {
+            Logger.getLogger(AltaCompra.class.getName()).log(Level.SEVERE, null, ex);
+            error = true;
+            JOptionPane.showMessageDialog(null,"Error al intentar updatear la compra con el set de detalles.","Error AltaCompra - form_botonRealizarCompraActionPerformed!",JOptionPane.PLAIN_MESSAGE);
+        }
+        //Finalmente, realizar la compra de los detalles correspondientes, agregando a la BD.
         if(ultimaCompra != null && !error){
             for(Detalles d : listaDetalles){
                 d.setCompras(ultimaCompra);
@@ -298,6 +314,7 @@ public class AltaCompra extends javax.swing.JDialog {
                     JOptionPane.showMessageDialog(null,"Se produjo un error al intentar guardar los detalles de la compra.","Error!",JOptionPane.WARNING_MESSAGE);
                 }
             }
+            //Si no se produjo ningun error, mostrar el cartel de exito.
             if(!error){
                 JOptionPane.showMessageDialog(null,"Compra realizada correctamente.","Completado!",JOptionPane.PLAIN_MESSAGE);
                 //Resetear la lista de detalles, en caso de que la ventana se volviera a abrir para que no queden guardados los antiguos datos.

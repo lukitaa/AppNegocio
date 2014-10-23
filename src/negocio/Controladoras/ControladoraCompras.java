@@ -61,7 +61,6 @@ public class ControladoraCompras extends ControladoraMedia {
             session.beginTransaction();
             List<Compras> l = new ComprasDaoImpl(session).fetchAll();
             session.getTransaction().commit();
-            session.close();
             return l;
         } catch (HibernateException e) {
             if (session != null) {
@@ -69,6 +68,23 @@ public class ControladoraCompras extends ControladoraMedia {
                 session.close();
             }
             throw new StorageException("Error al intentar cargar las compras.");
+        }
+    }
+    
+    public static void updateCompra(Compras compraModificar) throws StorageException {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            session.beginTransaction();
+            // And now update the DB one
+            new ComprasDaoImpl(session).update(compraModificar);
+            session.getTransaction().commit();
+            session.close();
+        } catch(HibernateException e) {
+            if (session != null) {
+                session.getTransaction().rollback();
+                session.close();
+            }
+            throw new StorageException("Error interno al intentar actualizar la compra.");
         }
     }
 }
