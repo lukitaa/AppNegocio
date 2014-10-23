@@ -24,6 +24,8 @@ import negocio.Controladoras.StorageException;
 import negocio.Entidades.Compras;
 import negocio.Entidades.Detalles;
 import negocio.Entidades.Productos;
+import negocio.Hibernate.HibernateUtil;
+import org.hibernate.Session;
 
 /**
  *
@@ -32,7 +34,7 @@ import negocio.Entidades.Productos;
 public class AltaCompra extends javax.swing.JDialog {
 
     float total = 0;
-    List<Detalles> listaDetalles = null;
+    List<Detalles> listaDetalles;
     /**
      * Creates new form AltaCompra
      */
@@ -249,8 +251,6 @@ public class AltaCompra extends javax.swing.JDialog {
 
     //Evento en el que gana el foco el form para completar los combos y la fecha actual.
     private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
-        //Resetear la lista de detalles, en caso de que la ventana se volviera a abrir para que no queden guardados los antiguos datos.
-        listaDetalles = null;
         //Completar los combos con los productos y los proveedores.
         if(form_comboProducto.getItemCount() <= 0 && form_comboProveedor.getItemCount() <= 0){
             ControladoraAltaCompra.completarComboBoxDeProductosYProveedores(form_comboProducto, form_comboProveedor);
@@ -272,27 +272,36 @@ public class AltaCompra extends javax.swing.JDialog {
         //Verificar si la fecha ingresada es correcta, y guardarla para utilizar luego en la compra
         Date date = ControladoraAltaCompra.parsearFecha(form_fecha);
         //Agregar una nueva compra en la BD con la fecha ingresada, para obtener el ID necesario para los detalles.
+
         try {
             ControladoraCompras.agregarCompra(date, null);
         } catch (InvalidParameterException | StorageException ex) {
-            Logger.getLogger(AltaCompra.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null,"Se produjo un error al intentar guardar la compra.","Error!",JOptionPane.WARNING_MESSAGE);
+            Logger.getLogger(AltaCompra.class.getName()).log(Level.SEVERE, null, ex);
         }
         //Obtener la ultima compra, realizada anteriormente, para agregar en el detalle.
-        Compras ultimaCompra = ControladoraAltaCompra.obtenerUltimaCompra();
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Compras ultimaCompra = ControladoraAltaCompra.obtenerUltimaCompra(session);
         //Finalmente, realizar la compra de los detalles correspondientes.
-        if(ultimaCompra != null){
+        boolean error = false;
+        if(ultimaCompra != null && !error){
             for(Detalles d : listaDetalles){
                 d.setCompras(ultimaCompra);
                 try {
-                    ControladoraDetalles.agregarDetalle(d.getCompras(),d.getProductos(), (d.getPrecio() * d.getCantidad()), d.getCantidad());
+                    ControladoraDetalles.agregarDetalle(d.getCompras(),d.getProductos(), (d.getTotal()* d.getCantidad()), d.getCantidad());
                 } catch (InvalidParameterException | StorageException ex) {
                     Logger.getLogger(AltaCompra.class.getName()).log(Level.SEVERE, null, ex);
+                    error = true;
                     JOptionPane.showMessageDialog(null,"Se produjo un error al intentar guardar los detalles de la compra.","Error!",JOptionPane.WARNING_MESSAGE);
                 }
             }
+            if(!error){
+                JOptionPane.showMessageDialog(null,"Compra realizada correctamente.","Completado!",JOptionPane.PLAIN_MESSAGE);
+                //Resetear la lista de detalles, en caso de que la ventana se volviera a abrir para que no queden guardados los antiguos datos.
+                listaDetalles = new ArrayList();
+            }
         }
-        JOptionPane.showMessageDialog(null,"Compra realizada correctamente.","Completado!",JOptionPane.PLAIN_MESSAGE);
+        session.close();
     }//GEN-LAST:event_form_botonRealizarCompraActionPerformed
 
     //Boton de agregar productos a la tabla de compras.
@@ -316,6 +325,7 @@ public class AltaCompra extends javax.swing.JDialog {
             form_tablaProductos.setModel(modelo);
             form_total.setText("Costo total de la compra: $" + String.valueOf(total) + ".");
             
+            int debug = listaDetalles.size();
             //Agregar el detalle a la lista, para luego agregar en la BD
             agregarDetalleALista(form_comboProducto.getSelectedItem().toString(), form_precio.getText(), form_cantidad.getText());
         }
@@ -340,6 +350,7 @@ public class AltaCompra extends javax.swing.JDialog {
                     prod = p;
             }
         } catch (StorageException ex) {
+            JOptionPane.showMessageDialog(null,"Error al cargar el detalle.","Error!",JOptionPane.WARNING_MESSAGE);
             Logger.getLogger(AltaCompra.class.getName()).log(Level.SEVERE, null, ex);
         }
         //Obtener el precio y la cantidad comprada.
