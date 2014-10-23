@@ -259,6 +259,9 @@ public class AltaCompra extends javax.swing.JDialog {
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         Date date = new Date();
         form_fecha.setText(dateFormat.format(date));
+        //Eliminar de la tabla los valores de la compra que ya se ha realizado.
+        DefaultTableModel renderer = (DefaultTableModel) form_tablaProductos.getModel();
+        renderer.setRowCount(0);
     }//GEN-LAST:event_formWindowGainedFocus
     
     
@@ -301,7 +304,6 @@ public class AltaCompra extends javax.swing.JDialog {
                 listaDetalles = new ArrayList();
             }
         }
-        session.close();
     }//GEN-LAST:event_form_botonRealizarCompraActionPerformed
 
     //Boton de agregar productos a la tabla de compras.
@@ -331,13 +333,6 @@ public class AltaCompra extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_form_botonAgregarProductoActionPerformed
 
-    
-    
-    //Evento que sucede al cambiar de item en el combo de proveedores para mostrar los productos de este elegido.
-    private void form_comboProveedorItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_form_comboProveedorItemStateChanged
-        ControladoraAltaCompra.completarComboProductosSegunProveedor(form_comboProducto, form_comboProveedor.getSelectedItem().toString());
-    }//GEN-LAST:event_form_comboProveedorItemStateChanged
-
     //Funcion para agregar los valores en la lista de detalles, que luego se guardara en la BD
     public void agregarDetalleALista(String nombreProducto, String precio, String cantidad){
         //Obtener el producto elegido para agregar al detalle.
@@ -360,6 +355,12 @@ public class AltaCompra extends javax.swing.JDialog {
         Detalles detail = new Detalles(null,prod, floatPrecio,intCantidad);
         listaDetalles.add(detail);
     }
+    
+    //Evento que sucede al cambiar de item en el combo de proveedores para mostrar los productos de este elegido.
+    private void form_comboProveedorItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_form_comboProveedorItemStateChanged
+        ControladoraAltaCompra.completarComboProductosSegunProveedor(form_comboProducto, form_comboProveedor.getSelectedItem().toString());
+    }//GEN-LAST:event_form_comboProveedorItemStateChanged
+
     
     /**
      * @param args the command line arguments
