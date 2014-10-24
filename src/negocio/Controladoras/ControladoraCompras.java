@@ -71,6 +71,21 @@ public class ControladoraCompras extends ControladoraMedia {
         }
     }
     
+    public static Compras getCompra(int compraID,Session session) throws StorageException {
+        try {
+            session.beginTransaction();
+            Compras p = new ComprasDaoImpl(session).get(compraID);
+            session.getTransaction().commit();
+            return p;
+        } catch(HibernateException e) {
+            if (session != null) {
+                session.getTransaction().rollback();
+                session.close();
+            }
+            throw new StorageException("Error interno al intentar cargar la compra.");
+        }
+    }
+    
     public static void updateCompra(Compras compraModificar) throws StorageException {
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
