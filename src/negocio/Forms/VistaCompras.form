@@ -53,10 +53,7 @@
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="form_modificarCompra" alignment="1" max="32767" attributes="0"/>
-                          <Component id="form_verCompraSeleccionada" max="32767" attributes="0"/>
-                      </Group>
+                      <Component id="form_verCompraSeleccionada" max="32767" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -82,11 +79,9 @@
               <Component id="jScrollPane1" min="-2" pref="326" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="form_realizarNuevaCompra" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="32767" attributes="0"/>
-              <Component id="form_modificarCompra" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="form_verCompraSeleccionada" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -164,17 +159,6 @@
           <Font name="Dialog" size="11" style="1"/>
         </Property>
       </Properties>
-    </Component>
-    <Component class="javax.swing.JButton" name="form_modificarCompra">
-      <Properties>
-        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Dialog" size="11" style="1"/>
-        </Property>
-        <Property name="text" type="java.lang.String" value="Modificar seleccionada"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="form_modificarCompraActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="form_verCompraSeleccionada">
       <Properties>

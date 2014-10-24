@@ -69,7 +69,6 @@ public class VistaCompras extends javax.swing.JDialog {
         form_comboVerComprasProducto = new javax.swing.JComboBox();
         jLabel3 = new javax.swing.JLabel();
         form_comboVerComprasProveedor = new javax.swing.JComboBox();
-        form_modificarCompra = new javax.swing.JButton();
         form_verCompraSeleccionada = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -128,14 +127,6 @@ public class VistaCompras extends javax.swing.JDialog {
 
         form_comboVerComprasProveedor.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
 
-        form_modificarCompra.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
-        form_modificarCompra.setText("Modificar seleccionada");
-        form_modificarCompra.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                form_modificarCompraActionPerformed(evt);
-            }
-        });
-
         form_verCompraSeleccionada.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
         form_verCompraSeleccionada.setText("Ver detalles de la seleccion");
         form_verCompraSeleccionada.addActionListener(new java.awt.event.ActionListener() {
@@ -169,9 +160,7 @@ public class VistaCompras extends javax.swing.JDialog {
                             .addComponent(form_realizarNuevaCompra, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(form_modificarCompra, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(form_verCompraSeleccionada, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addComponent(form_verCompraSeleccionada, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -191,11 +180,9 @@ public class VistaCompras extends javax.swing.JDialog {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(form_realizarNuevaCompra)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(form_modificarCompra)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(form_verCompraSeleccionada)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -279,16 +266,6 @@ public class VistaCompras extends javax.swing.JDialog {
         compra.setVisible(true);
     }//GEN-LAST:event_form_realizarNuevaCompraActionPerformed
 
-    //Boton para modificar los detalles de la compra.
-    private void form_modificarCompraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_form_modificarCompraActionPerformed
-        //Obtener el id de la compra seleccionada.
-        String tablaID = (String) form_tablaCompras.getValueAt(form_tablaCompras.getSelectedRow(), 0);
-        int IdCompraModificar = Integer.valueOf(tablaID);
-        //Mostrar el nuevo formulario.
-        ModificarCompraSeleccionada modificarCompra = new ModificarCompraSeleccionada(framePrincipal, rootPaneCheckingEnabled,IdCompraModificar);
-        modificarCompra.setVisible(true);
-    }//GEN-LAST:event_form_modificarCompraActionPerformed
-
     //Boton para mostrar los datos de la compra seleccionada.
     private void form_verCompraSeleccionadaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_form_verCompraSeleccionadaActionPerformed
         //Obtener el id de la compra seleccionada.
@@ -345,7 +322,6 @@ public class VistaCompras extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox form_comboVerComprasProducto;
     private javax.swing.JComboBox form_comboVerComprasProveedor;
-    private javax.swing.JButton form_modificarCompra;
     private javax.swing.JButton form_realizarNuevaCompra;
     private javax.swing.JTable form_tablaCompras;
     private javax.swing.JButton form_verCompraSeleccionada;

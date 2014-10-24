@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import negocio.Controladoras.ControladoraCompras;
@@ -26,6 +27,7 @@ import org.hibernate.Session;
 public class VistaCompraSeleccionada extends javax.swing.JDialog {
 
     int idCompraModificar = -1;
+    boolean modify = false;
     /**
      * Creates new form VistaCompraSeleccionada
      */
@@ -92,6 +94,8 @@ public class VistaCompraSeleccionada extends javax.swing.JDialog {
         jScrollPane1 = new javax.swing.JScrollPane();
         form_detallesTabla = new javax.swing.JTable();
         form_total = new javax.swing.JLabel();
+        form_botonVolver = new javax.swing.JButton();
+        form_botonModificar = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -111,23 +115,44 @@ public class VistaCompraSeleccionada extends javax.swing.JDialog {
             Class[] types = new Class [] {
                 java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, true, true, true, true, true
+            };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
         });
+        form_detallesTabla.setEnabled(false);
+        form_detallesTabla.setFocusable(false);
+        form_detallesTabla.setRowSelectionAllowed(false);
         jScrollPane1.setViewportView(form_detallesTabla);
 
         form_total.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         form_total.setText("Total de la compra: $");
 
-        jButton1.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
-        jButton1.setText("Volver");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        form_botonVolver.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
+        form_botonVolver.setText("Volver");
+        form_botonVolver.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                form_botonVolverActionPerformed(evt);
             }
         });
+
+        form_botonModificar.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
+        form_botonModificar.setText("Habilitar modificaciones");
+        form_botonModificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                form_botonModificarActionPerformed(evt);
+            }
+        });
+
+        jButton1.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
+        jButton1.setText("Aceptar y modificar las modificaciones");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -137,11 +162,14 @@ public class VistaCompraSeleccionada extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(form_botonModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton1))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(form_total, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(form_botonVolver, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(241, Short.MAX_VALUE)
@@ -156,18 +184,32 @@ public class VistaCompraSeleccionada extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(form_total)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(form_total)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(form_botonVolver)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(form_botonModificar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton1)))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    //Boton para volver atras.
+    private void form_botonVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_form_botonVolverActionPerformed
         this.setVisible(false);
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_form_botonVolverActionPerformed
+
+    //Boton para permitir que sea modificable la tabla.
+    private void form_botonModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_form_botonModificarActionPerformed
+        form_detallesTabla.setFocusable(true);
+        form_detallesTabla.setRowSelectionAllowed(true);
+    }//GEN-LAST:event_form_botonModificarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -212,6 +254,8 @@ public class VistaCompraSeleccionada extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton form_botonModificar;
+    private javax.swing.JButton form_botonVolver;
     private javax.swing.JTable form_detallesTabla;
     private javax.swing.JLabel form_total;
     private javax.swing.JButton jButton1;
