@@ -66,9 +66,10 @@ public class VistaCompraSeleccionada extends javax.swing.JDialog {
                 data[0] = compraMod.getIdCompra().toString();
                 data[1] = compraMod.getFecha().toString();
                 data[2] = d.getProductos().getProducto();
-                data[3] = d.getProductos().getPrecio().toString();
-                data[4] = d.getCantidad().toString();
-                data[5] = String.valueOf(d.getTotal());
+                data[3] = "$" + d.getProductos().getPrecio().toString();
+                data[4] = "$" + String.valueOf(d.getTotal() / d.getCantidad());
+                data[5] = d.getCantidad().toString();
+                data[6] = "$" + String.valueOf(d.getTotal());
                 modelo.addRow(data);
                 auxTotal += d.getTotal();
                 form_total.setText(form_total.getText() + auxTotal);
@@ -96,7 +97,7 @@ public class VistaCompraSeleccionada extends javax.swing.JDialog {
         form_total = new javax.swing.JLabel();
         form_botonVolver = new javax.swing.JButton();
         form_botonModificar = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        form_botonRealizarLosCambios = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -109,14 +110,14 @@ public class VistaCompraSeleccionada extends javax.swing.JDialog {
 
             },
             new String [] {
-                "ID Compra", "Fecha", "Producto", "Precio de lista", "Cantidad comprada", "Total del producto"
+                "ID Compra", "Fecha", "Producto", "Precio lista actual", "Precio de compra", "Cantidad comprada", "Total del producto"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, true, true, true, true, true
+                false, true, true, true, true, true, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -151,8 +152,13 @@ public class VistaCompraSeleccionada extends javax.swing.JDialog {
             }
         });
 
-        jButton1.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
-        jButton1.setText("Aceptar y modificar las modificaciones");
+        form_botonRealizarLosCambios.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
+        form_botonRealizarLosCambios.setText("Aceptar y modificar las modificaciones");
+        form_botonRealizarLosCambios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                form_botonRealizarLosCambiosActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -161,20 +167,20 @@ public class VistaCompraSeleccionada extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 853, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(form_botonModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton1))
+                            .addComponent(form_botonRealizarLosCambios))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(form_total, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(form_botonVolver, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(241, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
-                .addGap(226, 226, 226))
+                .addGap(262, 262, 262))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -193,7 +199,7 @@ public class VistaCompraSeleccionada extends javax.swing.JDialog {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(form_botonModificar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1)))
+                        .addComponent(form_botonRealizarLosCambios)))
                 .addContainerGap())
         );
 
@@ -210,6 +216,11 @@ public class VistaCompraSeleccionada extends javax.swing.JDialog {
         form_detallesTabla.setFocusable(true);
         form_detallesTabla.setRowSelectionAllowed(true);
     }//GEN-LAST:event_form_botonModificarActionPerformed
+
+    //Boton para realizar las modificaciones hechas.
+    private void form_botonRealizarLosCambiosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_form_botonRealizarLosCambiosActionPerformed
+        JOptionPane.showMessageDialog(null,"Esta opcion todavia no esta habilitada.","To do work!",JOptionPane.WARNING_MESSAGE);
+    }//GEN-LAST:event_form_botonRealizarLosCambiosActionPerformed
 
     /**
      * @param args the command line arguments
@@ -255,10 +266,10 @@ public class VistaCompraSeleccionada extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton form_botonModificar;
+    private javax.swing.JButton form_botonRealizarLosCambios;
     private javax.swing.JButton form_botonVolver;
     private javax.swing.JTable form_detallesTabla;
     private javax.swing.JLabel form_total;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
