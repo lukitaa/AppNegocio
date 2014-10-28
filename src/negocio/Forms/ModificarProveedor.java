@@ -27,7 +27,7 @@ public class ModificarProveedor extends javax.swing.JDialog {
         this.setLocationRelativeTo(parent);
         initComponents();
         try {
-            proveedor = ControladoraProveedores.getProveedor(ABMProveedores.proveedorModificar.getIdProveedor());
+            proveedor = ControladoraProveedores.getProveedor(VistaProveedores.proveedorModificar.getIdProveedor());
         } catch (StorageException ex) {
             Logger.getLogger(ModificarProveedor.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -65,16 +65,23 @@ public class ModificarProveedor extends javax.swing.JDialog {
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("Nombre:");
 
+        form_proveedor.setToolTipText("<html>\n\t<strong>El nombre del proveedor.</strong>\n</html>");
+
         jLabel3.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("Telefono:");
+
+        form_telefono.setToolTipText("<html>\n\t<strong>El telefono del proveedor.</strong>\n</html>");
 
         jLabel4.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel4.setText("Mail:");
 
+        form_mail.setToolTipText("<html>\n\t<strong>El mail del proveedor.</strong>\n</html>");
+
         form_modificarDatos.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         form_modificarDatos.setText("Modificar datos");
+        form_modificarDatos.setToolTipText("<html>\n\t<strong>Confirmar los cambios realizados.</strong>\n</html>");
         form_modificarDatos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 form_modificarDatosActionPerformed(evt);

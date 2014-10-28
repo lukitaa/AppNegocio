@@ -111,6 +111,7 @@ public class VistaCompras extends javax.swing.JDialog {
 
         form_realizarNuevaCompra.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
         form_realizarNuevaCompra.setText("Realizar nueva compra");
+        form_realizarNuevaCompra.setToolTipText("<html>\n\t<strong>Realizar una nueva compra.</strong>\n</html>");
         form_realizarNuevaCompra.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 form_realizarNuevaCompraActionPerformed(evt);
@@ -121,6 +122,7 @@ public class VistaCompras extends javax.swing.JDialog {
         jLabel2.setText("Ver compras de producto:");
 
         form_comboVerComprasProducto.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
+        form_comboVerComprasProducto.setToolTipText("<html>\n\t<strong>Mostrar las compras que tengan el producto elegido.</strong>\n</html>");
         form_comboVerComprasProducto.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 form_comboVerComprasProductoItemStateChanged(evt);
@@ -131,6 +133,7 @@ public class VistaCompras extends javax.swing.JDialog {
         jLabel3.setText("Ver compras de proveedor:");
 
         form_comboVerComprasProveedor.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
+        form_comboVerComprasProveedor.setToolTipText("<html>\n\t<strong>Mostrar las compras que tengan el proveedor elegido.</strong>\n</html>");
         form_comboVerComprasProveedor.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 form_comboVerComprasProveedorItemStateChanged(evt);
@@ -139,6 +142,7 @@ public class VistaCompras extends javax.swing.JDialog {
 
         form_verCompraSeleccionada.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
         form_verCompraSeleccionada.setText("Ver detalles de la seleccion");
+        form_verCompraSeleccionada.setToolTipText("<html>\n\t<strong>Mostrar los detalles de la compra elegida.</strong>\n</html>");
         form_verCompraSeleccionada.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 form_verCompraSeleccionadaActionPerformed(evt);

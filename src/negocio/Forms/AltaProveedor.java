@@ -54,16 +54,23 @@ public class AltaProveedor extends javax.swing.JDialog {
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("Nombre:");
 
+        form_proveedor.setToolTipText("<html>\n\t<strong>El nombre del proveedor.</strong>\n</html>");
+
         jLabel3.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("Telefono:");
+
+        form_telefono.setToolTipText("<html>\n\t<strong>El telefono del proveedor.</strong>\n</html>");
 
         jLabel4.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel4.setText("Mail:");
 
+        form_mail.setToolTipText("<html>\n\t<strong>El mail del proveedor.</strong>\n</html>");
+
         form_agregarProveedor.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         form_agregarProveedor.setText("Agregar proveedor");
+        form_agregarProveedor.setToolTipText("<html>\n\t<strong>Realizar el alta del proveedor.</strong>\n</html>");
         form_agregarProveedor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 form_agregarProveedorActionPerformed(evt);

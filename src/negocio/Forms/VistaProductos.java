@@ -22,14 +22,14 @@ import negocio.Entidades.Productos;
  *
  * @author usuario
  */
-public class ABMProductos extends javax.swing.JDialog {
+public class VistaProductos extends javax.swing.JDialog {
 
     Frame formParent = null;
     static Productos productoModificar = null;
     /**
      * Creates new form ABMProductos
      */
-    public ABMProductos(java.awt.Frame parent, boolean modal) {
+    public VistaProductos(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         this.setLocationRelativeTo(parent);
         initComponents();
@@ -76,6 +76,7 @@ public class ABMProductos extends javax.swing.JDialog {
 
         form_eliminarProducto.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         form_eliminarProducto.setText("Eliminar producto");
+        form_eliminarProducto.setToolTipText("<html>\n\t<strong>Eliminar el producto elegido.</strong>\n</html>");
         form_eliminarProducto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 form_eliminarProductoActionPerformed(evt);
@@ -84,6 +85,7 @@ public class ABMProductos extends javax.swing.JDialog {
 
         form_agregarProducto.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         form_agregarProducto.setText("Agregar producto");
+        form_agregarProducto.setToolTipText("<html>\n\t<strong>Realizar el alta de un producto.</strong>\n</html>");
         form_agregarProducto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 form_agregarProductoActionPerformed(evt);
@@ -92,6 +94,7 @@ public class ABMProductos extends javax.swing.JDialog {
 
         form_modificarProducto.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         form_modificarProducto.setText("Modificar producto");
+        form_modificarProducto.setToolTipText("<html>\n\t<strong>Modificar los datos de un producto.</strong>\n</html>");
         form_modificarProducto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 form_modificarProductoActionPerformed(evt);
@@ -172,7 +175,7 @@ public class ABMProductos extends javax.swing.JDialog {
         altaProducto.setVisible(true);
     }//GEN-LAST:event_form_agregarProductoActionPerformed
 
-    //Evento en el que la ventana ABMProductos gana el foco del programa.
+    //Evento en el que la ventana VistaProductos gana el foco del programa.
     private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
         refreshDataTable();
     }//GEN-LAST:event_formWindowGainedFocus
@@ -185,7 +188,7 @@ public class ABMProductos extends javax.swing.JDialog {
                 ControladoraProductos.eliminarProducto(p);
                 JOptionPane.showMessageDialog(null,"El producto ha sido eliminado correctamente.","Eliminar producto",JOptionPane.PLAIN_MESSAGE);
             } catch (InvalidParameterException | StorageException ex) {
-                Logger.getLogger(ABMProductos.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(VistaProductos.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         else
@@ -213,7 +216,7 @@ public class ABMProductos extends javax.swing.JDialog {
                 prod = ControladoraProductos.getProductos();
                 p = prod.get(filaElegida);
             } catch (StorageException ex) {
-                Logger.getLogger(ABMProveedores.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(VistaProveedores.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return p;
@@ -242,7 +245,7 @@ public class ABMProductos extends javax.swing.JDialog {
             }
             form_tablaProductos.setModel(modelo);
         } catch (StorageException ex) {
-            Logger.getLogger(ABMProveedores.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(VistaProveedores.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -263,20 +266,21 @@ public class ABMProductos extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ABMProductos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VistaProductos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ABMProductos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VistaProductos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ABMProductos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VistaProductos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ABMProductos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VistaProductos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                ABMProductos dialog = new ABMProductos(new javax.swing.JFrame(), true);
+                VistaProductos dialog = new VistaProductos(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

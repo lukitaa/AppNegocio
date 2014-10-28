@@ -10,9 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -113,14 +111,18 @@ public class AltaCompra extends javax.swing.JDialog {
 
         form_fecha.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter()));
         form_fecha.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        form_fecha.setToolTipText("<html>\n\t<strong>La fecha de la compra.</strong>\n</html>");
         form_fecha.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
 
         form_precio.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
+        form_precio.setToolTipText("<html>\n\t<strong>El precio del producto comprado.\n\t<br> El precio es el de lista, en caso de que sea otro, modificarlo.</strong>\n</html>");
 
         form_cantidad.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
+        form_cantidad.setToolTipText("<html>\n\t<strong>La cantidad del producto comprada.</strong>\n</html>");
 
         form_botonRealizarCompra.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
         form_botonRealizarCompra.setText("Realizar compra");
+        form_botonRealizarCompra.setToolTipText("<html>\n\t<strong>Realizar la compra con los productos agregados.</strong>\n</html>");
         form_botonRealizarCompra.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 form_botonRealizarCompraActionPerformed(evt);
@@ -128,6 +130,7 @@ public class AltaCompra extends javax.swing.JDialog {
         });
 
         form_comboProveedor.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
+        form_comboProveedor.setToolTipText("<html>\n\t<strong>El proveedor al que se le compro.</strong>\n</html>");
         form_comboProveedor.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 form_comboProveedorItemStateChanged(evt);
@@ -135,6 +138,7 @@ public class AltaCompra extends javax.swing.JDialog {
         });
 
         form_comboProducto.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
+        form_comboProducto.setToolTipText("<html>\n\t<strong>El producto que se compro.</strong>\n</html>");
 
         form_tablaProductos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -163,6 +167,7 @@ public class AltaCompra extends javax.swing.JDialog {
 
         form_botonAgregarProducto.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
         form_botonAgregarProducto.setText("Agregar producto a la compra");
+        form_botonAgregarProducto.setToolTipText("<html>\n\t<strong>Agregar el producto a la compra.</strong>\n</html>");
         form_botonAgregarProducto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 form_botonAgregarProductoActionPerformed(evt);
@@ -268,6 +273,8 @@ public class AltaCompra extends javax.swing.JDialog {
             DefaultTableModel renderer = (DefaultTableModel) form_tablaProductos.getModel();
             renderer.setRowCount(0);
         }
+        //Deshabilitar la opcion de elegir un producto.
+        form_comboProducto.setEnabled(false);
     }//GEN-LAST:event_formWindowGainedFocus
     
     
@@ -375,7 +382,11 @@ public class AltaCompra extends javax.swing.JDialog {
     
     //Evento que sucede al cambiar de item en el combo de proveedores para mostrar los productos de este elegido.
     private void form_comboProveedorItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_form_comboProveedorItemStateChanged
-        ControladoraAltaCompra.completarComboProductosSegunProveedor(form_comboProducto, form_comboProveedor.getSelectedItem().toString());
+        ControladoraAltaCompra.completarComboProductosSegunProveedor(form_comboProducto, form_comboProveedor.getSelectedItem().toString(),form_precio);
+        if(form_comboProducto.getSelectedItem().equals("Seleccionar..."))
+            form_comboProducto.setEnabled(false);
+        else
+            form_comboProducto.setEnabled(true);
     }//GEN-LAST:event_form_comboProveedorItemStateChanged
 
     

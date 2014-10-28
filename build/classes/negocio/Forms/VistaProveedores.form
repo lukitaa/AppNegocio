@@ -80,6 +80,7 @@
           <Font name="Dialog" size="11" style="1"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Agregar proveedor"/>
+        <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt; &#x9;&#xa;&#x9;&lt;strong&gt;Realizar el alta de un proveedor.&lt;/strong&gt; &#xa;&lt;/html&gt;"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="form_botonAgregarActionPerformed"/>
@@ -91,6 +92,7 @@
           <Font name="Dialog" size="11" style="1"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Modificar proveedor"/>
+        <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;&#xa;&#x9;&lt;strong&gt;Modificar los datos de un proveedor.&lt;/strong&gt;&#xa;&lt;/html&gt;"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="form_botonModificarActionPerformed"/>
@@ -102,6 +104,7 @@
           <Font name="Dialog" size="11" style="1"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Eliminar proveedor"/>
+        <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;&#xa;&#x9;&lt;strong&gt;Eliminar el proveedor elegido.&lt;/strong&gt;&#xa;&lt;/html&gt;"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="form_botonEliminarActionPerformed"/>

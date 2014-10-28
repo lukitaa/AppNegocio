@@ -100,6 +100,7 @@ public class VistaStocks extends javax.swing.JDialog {
         jLabel2.setText("Buscar producto:");
 
         form_comboProductos.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
+        form_comboProductos.setToolTipText("<html>\n\t<strong>Filtrar los stocks segun el producto elegido.</strong>\n</html>");
         form_comboProductos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 form_comboProductosActionPerformed(evt);
@@ -111,12 +112,10 @@ public class VistaStocks extends javax.swing.JDialog {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
                         .addComponent(jLabel2)
                         .addGap(4, 4, 4)
                         .addComponent(form_comboProductos, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
@@ -166,7 +165,7 @@ public class VistaStocks extends javax.swing.JDialog {
         try {
             prod = ControladoraProductos.getProductos();
         } catch (StorageException ex) {
-            Logger.getLogger(ABMProveedores.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(VistaProveedores.class.getName()).log(Level.SEVERE, null, ex);
         }
         //Si no se selecciono ningun producto mostrar todos, caso contrario, mostrar el seleccionado.
         if(producto == "Seleccionar..."){

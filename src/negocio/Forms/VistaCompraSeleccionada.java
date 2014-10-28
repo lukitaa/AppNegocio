@@ -74,7 +74,7 @@ public class VistaCompraSeleccionada extends javax.swing.JDialog {
                 data[7] = "$" + String.valueOf(d.getTotal());
                 modelo.addRow(data);
                 auxTotal += d.getTotal();
-                form_total.setText(form_total.getText() + auxTotal);
+                form_total.setText("Total de la compra: $" + auxTotal);
             }
             form_detallesTabla.setModel(modelo);
             session.close();
@@ -140,6 +140,7 @@ public class VistaCompraSeleccionada extends javax.swing.JDialog {
 
         form_botonVolver.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         form_botonVolver.setText("Volver");
+        form_botonVolver.setToolTipText("<html>\n\t<strong>Volver a la ventana de la vista de compras.</strong>\n</html>");
         form_botonVolver.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 form_botonVolverActionPerformed(evt);
@@ -148,6 +149,7 @@ public class VistaCompraSeleccionada extends javax.swing.JDialog {
 
         form_botonModificar.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         form_botonModificar.setText("Habilitar modificaciones");
+        form_botonModificar.setToolTipText("<html>\n\t<strong>Permitir realizar modificaciones en los detalles.</strong>\n</html>");
         form_botonModificar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 form_botonModificarActionPerformed(evt);
@@ -156,6 +158,7 @@ public class VistaCompraSeleccionada extends javax.swing.JDialog {
 
         form_botonRealizarLosCambios.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         form_botonRealizarLosCambios.setText("Aceptar y modificar las modificaciones");
+        form_botonRealizarLosCambios.setToolTipText("<html>\n\t<strong>Confirmar los cambios realizados.</strong>\n</html>");
         form_botonRealizarLosCambios.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 form_botonRealizarLosCambiosActionPerformed(evt);

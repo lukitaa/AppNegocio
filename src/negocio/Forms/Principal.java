@@ -28,6 +28,7 @@ public class Principal extends javax.swing.JFrame {
 
         form_compras.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         form_compras.setText("Sector Compras");
+        form_compras.setToolTipText("<html>\n\t<ul><strong>Sector en el cual se puede: </strong>\n\t<li> Ver todas las compras realizadas.\n\t<li> Ver los detalles de una compra especifica.\n\t<li> Realizar una nueva compra.\n\t</ul>\n</html>");
         form_compras.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 form_comprasActionPerformed(evt);
@@ -36,6 +37,7 @@ public class Principal extends javax.swing.JFrame {
 
         form_stocks.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         form_stocks.setText("Sector Stocks");
+        form_stocks.setToolTipText("<html>\n\t<ul><strong>Sector en el cual se puede: </strong>\n\t<li> Observar los stocks de cada producto.\n\t</ul>\n</html>");
         form_stocks.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 form_stocksActionPerformed(evt);
@@ -43,7 +45,8 @@ public class Principal extends javax.swing.JFrame {
         });
 
         form_abmProductos.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        form_abmProductos.setText("ABM Productos");
+        form_abmProductos.setText("Sector Productos");
+        form_abmProductos.setToolTipText("<html>\n\t<ul><strong>Sector en el cual se puede: </strong>\n\t<li> Dar de alta productos.\n\t<li> Modificar datos de productos.\n\t<li> Eliminar productos.\n\t</ul>\n</html>");
         form_abmProductos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 form_abmProductosActionPerformed(evt);
@@ -52,6 +55,7 @@ public class Principal extends javax.swing.JFrame {
 
         form_exit.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         form_exit.setText("Salir del programa");
+        form_exit.setToolTipText("<html>\n\t<strong>Cerrar aplicacion</strong>\n</html>");
         form_exit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 form_exitActionPerformed(evt);
@@ -59,7 +63,8 @@ public class Principal extends javax.swing.JFrame {
         });
 
         form_abmProveedores.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        form_abmProveedores.setText("ABM Proveedores");
+        form_abmProveedores.setText("Sector Proveedores");
+        form_abmProveedores.setToolTipText("<html>\n\t<ul><strong>Sector en el cual se puede: </strong>\n\t<li> Dar de alta proveedores.\n\t<li> Modificar datos de proveedores.\n\t<li> Eliminar proveedores.\n\t</ul>\n</html>");
         form_abmProveedores.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 form_abmProveedoresActionPerformed(evt);
@@ -114,13 +119,13 @@ public class Principal extends javax.swing.JFrame {
 
     //Boton para mostrar el ABM de los productos
     private void form_abmProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_form_abmProductosActionPerformed
-        ABMProductos productos = new ABMProductos(this, rootPaneCheckingEnabled);
+        VistaProductos productos = new VistaProductos(this, rootPaneCheckingEnabled);
         productos.setVisible(true);
     }//GEN-LAST:event_form_abmProductosActionPerformed
 
     //Boton para mostrar el ABM de los proveedores
     private void form_abmProveedoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_form_abmProveedoresActionPerformed
-        ABMProveedores proveedores = new ABMProveedores(this, rootPaneCheckingEnabled);
+        VistaProveedores proveedores = new VistaProveedores(this, rootPaneCheckingEnabled);
         proveedores.setVisible(true);
     }//GEN-LAST:event_form_abmProveedoresActionPerformed
 

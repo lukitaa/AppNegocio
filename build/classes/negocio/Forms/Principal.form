@@ -72,6 +72,7 @@
           <Font name="Tahoma" size="14" style="0"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Sector Compras"/>
+        <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;&#xa;&#x9;&lt;ul&gt;&lt;strong&gt;Sector en el cual se puede: &lt;/strong&gt;&#xa;&#x9;&lt;li&gt; Ver todas las compras realizadas.&#xa;&#x9;&lt;li&gt; Ver los detalles de una compra especifica.&#xa;&#x9;&lt;li&gt; Realizar una nueva compra.&#xa;&#x9;&lt;/ul&gt;&#xa;&lt;/html&gt;"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="form_comprasActionPerformed"/>
@@ -83,6 +84,7 @@
           <Font name="Tahoma" size="14" style="0"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Sector Stocks"/>
+        <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;&#xa;&#x9;&lt;ul&gt;&lt;strong&gt;Sector en el cual se puede: &lt;/strong&gt;&#xa;&#x9;&lt;li&gt; Observar los stocks de cada producto.&#xa;&#x9;&lt;/ul&gt;&#xa;&lt;/html&gt;"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="form_stocksActionPerformed"/>
@@ -93,7 +95,8 @@
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Tahoma" size="14" style="0"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="ABM Productos"/>
+        <Property name="text" type="java.lang.String" value="Sector Productos"/>
+        <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;&#xa;&#x9;&lt;ul&gt;&lt;strong&gt;Sector en el cual se puede: &lt;/strong&gt;&#xa;&#x9;&lt;li&gt; Dar de alta productos.&#xa;&#x9;&lt;li&gt; Modificar datos de productos.&#xa;&#x9;&lt;li&gt; Eliminar productos.&#xa;&#x9;&lt;/ul&gt;&#xa;&lt;/html&gt;"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="form_abmProductosActionPerformed"/>
@@ -105,6 +108,7 @@
           <Font name="Tahoma" size="14" style="0"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Salir del programa"/>
+        <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;&#xa;&#x9;&lt;strong&gt;Cerrar aplicacion&lt;/strong&gt;&#xa;&lt;/html&gt;"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="form_exitActionPerformed"/>
@@ -115,7 +119,8 @@
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Tahoma" size="14" style="0"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="ABM Proveedores"/>
+        <Property name="text" type="java.lang.String" value="Sector Proveedores"/>
+        <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;&#xa;&#x9;&lt;ul&gt;&lt;strong&gt;Sector en el cual se puede: &lt;/strong&gt;&#xa;&#x9;&lt;li&gt; Dar de alta proveedores.&#xa;&#x9;&lt;li&gt; Modificar datos de proveedores.&#xa;&#x9;&lt;li&gt; Eliminar proveedores.&#xa;&#x9;&lt;/ul&gt;&#xa;&lt;/html&gt;"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="form_abmProveedoresActionPerformed"/>

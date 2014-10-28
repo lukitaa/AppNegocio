@@ -95,6 +95,9 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="form_proveedor">
+      <Properties>
+        <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;&#xa;&#x9;&lt;strong&gt;El nombre del proveedor.&lt;/strong&gt;&#xa;&lt;/html&gt;"/>
+      </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel3">
       <Properties>
@@ -106,6 +109,9 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="form_telefono">
+      <Properties>
+        <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;&#xa;&#x9;&lt;strong&gt;El telefono del proveedor.&lt;/strong&gt;&#xa;&lt;/html&gt;"/>
+      </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel4">
       <Properties>
@@ -117,6 +123,9 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="form_mail">
+      <Properties>
+        <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;&#xa;&#x9;&lt;strong&gt;El mail del proveedor.&lt;/strong&gt;&#xa;&lt;/html&gt;"/>
+      </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="form_agregarProveedor">
       <Properties>
@@ -124,6 +133,7 @@
           <Font name="Dialog" size="12" style="1"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Agregar proveedor"/>
+        <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;&#xa;&#x9;&lt;strong&gt;Realizar el alta del proveedor.&lt;/strong&gt;&#xa;&lt;/html&gt;"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="form_agregarProveedorActionPerformed"/>

@@ -19,7 +19,6 @@ import negocio.Entidades.Proveedores;
 import negocio.Forms.AltaCompra;
 import javax.swing.JFormattedTextField;
 import java.util.Date;
-import javax.swing.DefaultComboBoxModel;
 import negocio.Entidades.Compras;
 import org.hibernate.Session;
 
@@ -126,7 +125,8 @@ public class ControladoraAltaCompra {
         return ultimaCompra;
     }
     
-    public static void completarComboProductosSegunProveedor(JComboBox comboProductos,String proveedorACorroborar){
+    //Funcion utilizada en el form AltaCompra a la hora de mostrar los productos del proveedor elegido.
+    public static void completarComboProductosSegunProveedor(JComboBox comboProductos,String proveedorACorroborar,JTextField precioDelProducto){
         //DefaultComboBoxModel model = (DefaultComboBoxModel) comboProductos.getModel();
         //model.removeAllElements();
         comboProductos.removeAllItems();

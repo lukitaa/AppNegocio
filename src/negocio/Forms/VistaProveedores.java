@@ -22,14 +22,14 @@ import negocio.Entidades.Proveedores;
  *
  * @author usuario
  */
-public class ABMProveedores extends javax.swing.JDialog {
+public class VistaProveedores extends javax.swing.JDialog {
 
     Frame framePrincipal = null;
     static Proveedores proveedorModificar = null;
     /**
      * Creates new form ABMProveedores
      */
-    public ABMProveedores(java.awt.Frame parent, boolean modal) {
+    public VistaProveedores(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         this.setLocationRelativeTo(parent);
         initComponents();
@@ -76,6 +76,7 @@ public class ABMProveedores extends javax.swing.JDialog {
 
         form_botonAgregar.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
         form_botonAgregar.setText("Agregar proveedor");
+        form_botonAgregar.setToolTipText("<html> \t\n\t<strong>Realizar el alta de un proveedor.</strong> \n</html>");
         form_botonAgregar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 form_botonAgregarActionPerformed(evt);
@@ -84,6 +85,7 @@ public class ABMProveedores extends javax.swing.JDialog {
 
         form_botonModificar.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
         form_botonModificar.setText("Modificar proveedor");
+        form_botonModificar.setToolTipText("<html>\n\t<strong>Modificar los datos de un proveedor.</strong>\n</html>");
         form_botonModificar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 form_botonModificarActionPerformed(evt);
@@ -92,6 +94,7 @@ public class ABMProveedores extends javax.swing.JDialog {
 
         form_botonEliminar.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
         form_botonEliminar.setText("Eliminar proveedor");
+        form_botonEliminar.setToolTipText("<html>\n\t<strong>Eliminar el proveedor elegido.</strong>\n</html>");
         form_botonEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 form_botonEliminarActionPerformed(evt);
@@ -175,7 +178,7 @@ public class ABMProveedores extends javax.swing.JDialog {
                 ControladoraProveedores.eliminarProveedor(p);
                 JOptionPane.showMessageDialog(null,"El proveedor ha sido eliminado correctamente.","Eliminar proveedor",JOptionPane.PLAIN_MESSAGE);
             } catch (InvalidParameterException | StorageException ex) {
-                Logger.getLogger(ABMProveedores.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(VistaProveedores.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         else
@@ -207,7 +210,7 @@ public class ABMProveedores extends javax.swing.JDialog {
                 prov = ControladoraProveedores.getProveedores();
                 p = prov.get(filaElegida);
             } catch (StorageException ex) {
-                Logger.getLogger(ABMProveedores.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(VistaProveedores.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return p;
@@ -235,7 +238,7 @@ public class ABMProveedores extends javax.swing.JDialog {
             }
             form_tablaProveedores.setModel(modelo);
         } catch (StorageException ex) {
-            Logger.getLogger(ABMProveedores.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(VistaProveedores.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -256,20 +259,21 @@ public class ABMProveedores extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ABMProveedores.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VistaProveedores.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ABMProveedores.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VistaProveedores.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ABMProveedores.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VistaProveedores.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ABMProveedores.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VistaProveedores.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                ABMProveedores dialog = new ABMProveedores(new javax.swing.JFrame(), true);
+                VistaProveedores dialog = new VistaProveedores(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

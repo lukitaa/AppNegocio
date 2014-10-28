@@ -32,7 +32,7 @@ public class ModificarProducto extends javax.swing.JDialog {
         this.setLocationRelativeTo(parent);
         initComponents();
         try {
-            productoModificar = ControladoraProductos.getProduct(ABMProductos.productoModificar.getIdProducto());
+            productoModificar = ControladoraProductos.getProduct(VistaProductos.productoModificar.getIdProducto());
         } catch (StorageException ex) {
             Logger.getLogger(ModificarProducto.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -68,15 +68,18 @@ public class ModificarProducto extends javax.swing.JDialog {
         });
 
         form_stock.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
+        form_stock.setToolTipText("<html>\n\t<strong>El stock del producto.</strong>\n</html>");
 
         jLabel4.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel4.setText("Precio:");
 
         form_precio.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
+        form_precio.setToolTipText("<html>\n\t<strong>El precio del producto.</strong>\n</html>");
 
         form_modificarDatos.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         form_modificarDatos.setText("Modificar datos");
+        form_modificarDatos.setToolTipText("<html>\n\t<strong>Confirmar los cambios realizados.</strong>\n</html>");
         form_modificarDatos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 form_modificarDatosActionPerformed(evt);
@@ -91,12 +94,14 @@ public class ModificarProducto extends javax.swing.JDialog {
         jLabel2.setText("Producto:");
 
         form_producto.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
+        form_producto.setToolTipText("<html>\n\t<strong>El nombre del producto.</strong>\n</html>");
 
         jLabel3.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("Stock:");
 
         form_proveedor.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
+        form_proveedor.setToolTipText("<html>\n\t<strong>El proveedor que tiene el producto.</strong>\n</html>");
 
         jLabel5.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         jLabel5.setText("Proveedor:");

@@ -72,24 +72,26 @@ public class AltaProducto extends javax.swing.JDialog {
         jLabel2.setText("Producto:");
 
         form_producto.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
-        form_producto.setToolTipText("El nombre del producto a agregar.");
+        form_producto.setToolTipText("<html>\n\t<strong>El nombre del producto.</strong>\n</html>");
 
         jLabel3.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         jLabel3.setText("Stock:");
 
         form_stock.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
-        form_stock.setToolTipText("<html>\nEl stock del producto a agregar.\n<br>La cantidad se ingresa de forma entera, es decir: en lugar de ingresar 2KG se debe ingresar 2000\n</html>");
+        form_stock.setToolTipText("<html>\n\t<strong>El stock del producto a agregar.</strong>\n\t<strong><br>La cantidad se ingresa de forma entera, es decir: en lugar de ingresar 2KG se debe ingresar \t\t2000</strong>\n</html>");
 
         jLabel4.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         jLabel4.setText("Precio:");
 
         form_proveedor.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
+        form_proveedor.setToolTipText("<html>\n\t<strong>El proveedor que tiene el producto.</strong>\n</html>");
 
         jLabel5.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         jLabel5.setText("Proveedor:");
 
         form_agregarProducto.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         form_agregarProducto.setText("Agregar producto");
+        form_agregarProducto.setToolTipText("<html>\n\t<strong>Realizar el alta del producto.</strong>\n</html>");
         form_agregarProducto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 form_agregarProductoActionPerformed(evt);
@@ -97,7 +99,7 @@ public class AltaProducto extends javax.swing.JDialog {
         });
 
         form_precio.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
-        form_precio.setToolTipText("<html>\nEl precio del producto.\n<br>El precio debe ser del siguiente formato: 000.00\n</html>");
+        form_precio.setToolTipText("<html>\n\t<strong>El precio del producto.\n\t<br>El precio debe ser del siguiente formato: 000.00</strong>\n</html>");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -189,7 +191,7 @@ public class AltaProducto extends javax.swing.JDialog {
                         p = pr;
                 }
             } catch (StorageException ex) {
-                Logger.getLogger(ABMProveedores.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(VistaProveedores.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return p;
