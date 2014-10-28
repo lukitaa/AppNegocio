@@ -131,6 +131,11 @@ public class VistaCompras extends javax.swing.JDialog {
         jLabel3.setText("Ver compras de proveedor:");
 
         form_comboVerComprasProveedor.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
+        form_comboVerComprasProveedor.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                form_comboVerComprasProveedorItemStateChanged(evt);
+            }
+        });
 
         form_verCompraSeleccionada.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
         form_verCompraSeleccionada.setText("Ver detalles de la seleccion");
@@ -221,53 +226,12 @@ public class VistaCompras extends javax.swing.JDialog {
             }
             if(prov != null && prod != null)
                 completarCombo(prov,prod);
-            //Completar la tabla con todas las compras realizadas.
-            List<Compras> listaCompras = null;
-            Session session = HibernateUtil.getSessionFactory().openSession();
-            try {
-                listaCompras = ControladoraCompras.getCompras(session);
-            } catch (StorageException ex) {
-                Logger.getLogger(VistaCompras.class.getName()).log(Level.SEVERE, null, ex);
-                JOptionPane.showMessageDialog(null,"Error al cargar la lista de compras.","Error Vista Compras: formWindowGainedFocus!",JOptionPane.WARNING_MESSAGE);
-            }
-            //Si la lista no es nula, es decir, no se produjo ningun error.
-            if(listaCompras != null){
-                //Agregar los valores a la tabla.
-                DefaultTableModel modelo = (DefaultTableModel) form_tablaCompras.getModel();
-                for(Compras c : listaCompras){
-                    String[] data = new String[5];
-                    data[0] = c.getIdCompra().toString();
-                    data[1] = c.getFecha().toString();
-                    Iterator it = c.getDetalleses().iterator();
-                    boolean foundName = false;
-                    int auxTotal = 0;
-                    while(it.hasNext()){
-                        Detalles d = (Detalles) it.next();
-                        //Obtener el nombre del proveedor de la compra.
-                        if(!foundName){
-                            int aux = d.getProductos().getIdProveedor();
-                            try {
-                                data[2] = ControladoraProveedores.getProveedor(aux).getProveedor();
-                            } catch (StorageException ex) {
-                                Logger.getLogger(VistaCompras.class.getName()).log(Level.SEVERE, null, ex);
-                                JOptionPane.showMessageDialog(null,"Error al intentar cargar el nombre del proveedor a la tabla.","Error Vista Compras: formWindowGainedFocus!",JOptionPane.WARNING_MESSAGE);
-                            }
-                        }
-                        //Obtener el total de la compra.
-                        auxTotal += d.getTotal() * d.getCantidad();
-                    }
-                    data[3] = "$" + String.valueOf(auxTotal);
-                    modelo.addRow(data);
-                }
-                form_tablaCompras.setModel(modelo);
-            }
-            session.close();
-            alreadyShowed = true;
         }
     }//GEN-LAST:event_formWindowGainedFocus
 
     //Funcion para completar los combobox con los valores de proveedores y productos.
     public void completarCombo(List<Proveedores> prov, List<Productos> prod){
+        //Si los combos no tienen nada se completan.
         if(form_comboVerComprasProducto.getItemCount() <= 0 && form_comboVerComprasProveedor.getItemCount() <= 0){
             form_comboVerComprasProducto.addItem("Seleccionar...");
             form_comboVerComprasProveedor.addItem("Seleccionar...");
@@ -275,6 +239,12 @@ public class VistaCompras extends javax.swing.JDialog {
                 form_comboVerComprasProveedor.addItem(p.getProveedor());
             for(Productos p : prod)
                 form_comboVerComprasProducto.addItem(p.getProducto());
+        }
+        //Si no, se pone el item seleccionado al basico, ya que se activara cuando se gana el foco del form
+        //ya sea porque se abrio el form o porque se volvio a este desde otro form.
+        else{
+            form_comboVerComprasProducto.setSelectedItem("Seleccionar...");
+            form_comboVerComprasProducto.setSelectedItem("Seleccionar...");
         }
     }
     
@@ -303,7 +273,7 @@ public class VistaCompras extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(null,"Seleccione la compra a mostrar.","Error!",JOptionPane.WARNING_MESSAGE);
     }//GEN-LAST:event_form_verCompraSeleccionadaActionPerformed
 
-    //Evento en el que se cambio el item seleccionado del combo
+    //Evento en el que se cambio el item seleccionado del combo producto.
     private void form_comboVerComprasProductoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_form_comboVerComprasProductoItemStateChanged
         String prodElegido = form_comboVerComprasProducto.getSelectedItem().toString();        
         //Habilitar la opcion de elegir proveedor.
@@ -313,6 +283,7 @@ public class VistaCompras extends javax.swing.JDialog {
         else
             form_comboVerComprasProveedor.setEnabled(false);
         completarTablaSegunProducto(prodElegido);
+        
     }//GEN-LAST:event_form_comboVerComprasProductoItemStateChanged
 
     //Funcion para completar la tabla segun producto o proveedor.
@@ -326,7 +297,7 @@ public class VistaCompras extends javax.swing.JDialog {
             listaCompras = ControladoraCompras.getCompras(session);
         } catch (StorageException ex) {
             Logger.getLogger(VistaCompras.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(null,"Error al cargar las compras.","Error VistaCompras - completarTablaSegunProducto!",JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null,"Error al cargar las compras segun producto.","Error VistaCompras - completarTablaSegunProducto!",JOptionPane.WARNING_MESSAGE);
         }
         //Agregar los valores a la tabla segun el producto elegido.
         DefaultTableModel modelo = (DefaultTableModel) form_tablaCompras.getModel();
@@ -335,7 +306,8 @@ public class VistaCompras extends javax.swing.JDialog {
             while(it.hasNext()){
                 Detalles d = (Detalles) it.next();
                 String[] data = new String[5];
-                if(d.getProductos().getProducto().equals(producto)){
+                //Si la compra tiene el producto elegido, agregar los detalles.
+                if(d.getProductos().getProducto().equals(producto) || producto.equals("Seleccionar...")){
                     data[0] = c.getIdCompra().toString();
                     data[1] = c.getFecha().toString();
                     try {
@@ -344,6 +316,59 @@ public class VistaCompras extends javax.swing.JDialog {
                             Logger.getLogger(VistaCompras.class.getName()).log(Level.SEVERE, null, ex);
                             JOptionPane.showMessageDialog(null,"Error al intentar cargar el nombre del proveedor a la tabla.","Error Vista Compras: completarTablaSegunProducto!",JOptionPane.WARNING_MESSAGE);
                         }
+                    data[3] = "$" + String.valueOf(d.getTotal() * d.getCantidad());
+                    modelo.addRow(data);
+                }
+            }
+        }
+        form_tablaCompras.setModel(modelo);
+    }
+    
+    //Evento en el que se cambio el item seleccionado del combo proveedor-
+    private void form_comboVerComprasProveedorItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_form_comboVerComprasProveedorItemStateChanged
+        String provElegido = form_comboVerComprasProveedor.getSelectedItem().toString();        
+        //Habilitar la opcion de elegir proveedor.
+        if(provElegido.equals("Seleccionar..."))
+            form_comboVerComprasProducto.setEnabled(true);
+        //Deshabilitar la opcion de elegir el proveedor si se elegio un producto y mostrar las compras del producto elegido.
+        else
+            form_comboVerComprasProducto.setEnabled(false);
+        completarTablaSegunProveedor(provElegido);
+    }//GEN-LAST:event_form_comboVerComprasProveedorItemStateChanged
+
+    //Funcion para completar la tabla segun producto o proveedor.
+    private void completarTablaSegunProveedor(String proveedor){
+        //Eliminar los valores de la tabla.
+        deleteTableElements();
+        //Obtener todas las compras.
+        List<Compras> listaCompras = null;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            listaCompras = ControladoraCompras.getCompras(session);
+        } catch (StorageException ex) {
+            Logger.getLogger(VistaCompras.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null,"Error al cargar las compras segun proveedor.","Error VistaCompras - completarTablaSegunProducto!",JOptionPane.WARNING_MESSAGE);
+        }
+        //Agregar los valores a la tabla segun el producto elegido.
+        DefaultTableModel modelo = (DefaultTableModel) form_tablaCompras.getModel();
+        for(Compras c : listaCompras){
+            Iterator it = c.getDetalleses().iterator();
+            while(it.hasNext()){
+                Detalles d = (Detalles) it.next();
+                String[] data = new String[5];
+                //Obtener el proveedor de la compra.
+                String proveedorAux = "";
+                try {
+                    proveedorAux = ControladoraProveedores.getProveedor(d.getProductos().getIdProveedor()).getProveedor();
+                } catch (StorageException ex) {
+                    Logger.getLogger(VistaCompras.class.getName()).log(Level.SEVERE, null, ex);
+                    JOptionPane.showMessageDialog(null,"Error al intentar cargar el nombre del proveedor a la tabla.","Error Vista Compras: completarTablaSegunProducto!",JOptionPane.WARNING_MESSAGE);
+                }
+                //Si la compra es al proveedor elegido, mostrar el detalle.
+                if(proveedorAux.equals(proveedor) || proveedor.equals("Seleccionar...")){
+                    data[0] = c.getIdCompra().toString();
+                    data[1] = c.getFecha().toString();
+                    data[2] = proveedorAux;
                     data[3] = "$" + String.valueOf(d.getTotal() * d.getCantidad());
                     modelo.addRow(data);
                 }

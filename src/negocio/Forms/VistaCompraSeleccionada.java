@@ -14,6 +14,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import negocio.Controladoras.ControladoraCompras;
+import negocio.Controladoras.ControladoraProveedores;
 import negocio.Controladoras.StorageException;
 import negocio.Entidades.Compras;
 import negocio.Entidades.Detalles;
@@ -62,14 +63,15 @@ public class VistaCompraSeleccionada extends javax.swing.JDialog {
             while(it.hasNext()){
                 Detalles d = (Detalles) it.next();
                 //ID Compra,Fecha,Producto,Precio,Cantidad,Total
-                String[] data = new String[7];
+                String[] data = new String[8];
                 data[0] = compraMod.getIdCompra().toString();
                 data[1] = compraMod.getFecha().toString();
-                data[2] = d.getProductos().getProducto();
-                data[3] = "$" + d.getProductos().getPrecio().toString();
-                data[4] = "$" + String.valueOf(d.getTotal() / d.getCantidad());
-                data[5] = d.getCantidad().toString();
-                data[6] = "$" + String.valueOf(d.getTotal());
+                data[2] = ControladoraProveedores.getProveedor(d.getProductos().getIdProveedor()).getProveedor();
+                data[3] = d.getProductos().getProducto();
+                data[4] = "$" + d.getProductos().getPrecio().toString();
+                data[5] = "$" + String.valueOf(d.getTotal() / d.getCantidad());
+                data[6] = d.getCantidad().toString();
+                data[7] = "$" + String.valueOf(d.getTotal());
                 modelo.addRow(data);
                 auxTotal += d.getTotal();
                 form_total.setText(form_total.getText() + auxTotal);
@@ -110,14 +112,14 @@ public class VistaCompraSeleccionada extends javax.swing.JDialog {
 
             },
             new String [] {
-                "ID Compra", "Fecha", "Producto", "Precio lista actual", "Precio de compra", "Cantidad comprada", "Total del producto"
+                "ID Compra", "Fecha", "Proveedor", "Producto", "Precio lista actual", "Precio de compra", "Cantidad comprada", "Total del producto"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, true, true, true, true, true, true
+                false, true, true, true, true, true, true, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -167,7 +169,7 @@ public class VistaCompraSeleccionada extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 853, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 969, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(form_botonModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -180,7 +182,7 @@ public class VistaCompraSeleccionada extends javax.swing.JDialog {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
-                .addGap(262, 262, 262))
+                .addGap(309, 309, 309))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
