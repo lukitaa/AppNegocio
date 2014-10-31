@@ -248,7 +248,7 @@ public class VistaCompras extends javax.swing.JDialog {
         //ya sea porque se abrio el form o porque se volvio a este desde otro form.
         else{
             form_comboVerComprasProducto.setSelectedItem("Seleccionar...");
-            form_comboVerComprasProducto.setSelectedItem("Seleccionar...");
+            form_comboVerComprasProveedor.setSelectedItem("Seleccionar...");
         }
     }
     

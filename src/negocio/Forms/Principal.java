@@ -1,10 +1,23 @@
 package negocio.Forms;
 
-import java.awt.Dimension;
-import java.awt.Toolkit;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import negocio.Controladoras.ControladoraMedia;
+import negocio.Controladoras.ControladoraProveedores;
+import negocio.Controladoras.StorageException;
+import negocio.Entidades.Productos;
+import negocio.Entidades.Proveedores;
 
 public class Principal extends javax.swing.JFrame {
 
+    
+    boolean alreadyShowed = false;
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -20,13 +33,20 @@ public class Principal extends javax.swing.JFrame {
         form_abmProductos = new javax.swing.JButton();
         form_exit = new javax.swing.JButton();
         form_abmProveedores = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        form_tablaCompras = new javax.swing.JTable();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        form_comboProveedor = new javax.swing.JComboBox();
+        jLabel4 = new javax.swing.JLabel();
+        form_comboProductos = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel1.setText("Programa de control de stock-compras");
+        jLabel1.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        jLabel1.setText("Programa para llevar el control de productos, compras, stock y proveedores.");
 
-        form_compras.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        form_compras.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         form_compras.setText("Sector Compras");
         form_compras.setToolTipText("<html>\n\t<ul><strong>Sector en el cual se puede: </strong>\n\t<li> Ver todas las compras realizadas.\n\t<li> Ver los detalles de una compra especifica.\n\t<li> Realizar una nueva compra.\n\t</ul>\n</html>");
         form_compras.addActionListener(new java.awt.event.ActionListener() {
@@ -35,7 +55,7 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
-        form_stocks.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        form_stocks.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         form_stocks.setText("Sector Stocks");
         form_stocks.setToolTipText("<html>\n\t<ul><strong>Sector en el cual se puede: </strong>\n\t<li> Observar los stocks de cada producto.\n\t</ul>\n</html>");
         form_stocks.addActionListener(new java.awt.event.ActionListener() {
@@ -44,7 +64,7 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
-        form_abmProductos.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        form_abmProductos.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         form_abmProductos.setText("Sector Productos");
         form_abmProductos.setToolTipText("<html>\n\t<ul><strong>Sector en el cual se puede: </strong>\n\t<li> Dar de alta productos.\n\t<li> Modificar datos de productos.\n\t<li> Eliminar productos.\n\t</ul>\n</html>");
         form_abmProductos.addActionListener(new java.awt.event.ActionListener() {
@@ -53,8 +73,8 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
-        form_exit.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        form_exit.setText("Salir del programa");
+        form_exit.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
+        form_exit.setText("Cerrar la aplicacion");
         form_exit.setToolTipText("<html>\n\t<strong>Cerrar aplicacion</strong>\n</html>");
         form_exit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -62,7 +82,7 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
-        form_abmProveedores.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        form_abmProveedores.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         form_abmProveedores.setText("Sector Proveedores");
         form_abmProveedores.setToolTipText("<html>\n\t<ul><strong>Sector en el cual se puede: </strong>\n\t<li> Dar de alta proveedores.\n\t<li> Modificar datos de proveedores.\n\t<li> Eliminar proveedores.\n\t</ul>\n</html>");
         form_abmProveedores.addActionListener(new java.awt.event.ActionListener() {
@@ -71,38 +91,113 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
+        form_tablaCompras.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
+        form_tablaCompras.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID Producto", "Producto", "Proveedor", "Precio", "Stock"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, true, true, true, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(form_tablaCompras);
+
+        jLabel2.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        jLabel2.setText("Muestra de los stocks actuales de los productos");
+
+        jLabel3.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
+        jLabel3.setText("Filtrar segun proveedor:");
+
+        form_comboProveedor.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
+        form_comboProveedor.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                form_comboProveedorItemStateChanged(evt);
+            }
+        });
+
+        jLabel4.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
+        jLabel4.setText("Filtrar segun producto:");
+
+        form_comboProductos.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
+        form_comboProductos.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                form_comboProductosItemStateChanged(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(form_compras, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(form_stocks, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(form_abmProductos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(form_exit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(form_abmProveedores, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(layout.createSequentialGroup()
+                            .addContainerGap()
+                            .addComponent(form_abmProductos, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(form_abmProveedores, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(form_stocks, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(form_compras, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(form_exit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(layout.createSequentialGroup()
+                            .addContainerGap()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                    .addComponent(jLabel3)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(form_comboProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(jLabel4)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(form_comboProductos, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 786, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(192, 192, 192)
+                        .addComponent(jLabel2))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(61, 61, 61)
+                        .addComponent(jLabel1)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(12, 12, 12)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(form_abmProductos)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(form_abmProveedores)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(form_stocks)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(form_compras)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(form_exit, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addGap(12, 12, 12)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(form_abmProveedores)
+                        .addComponent(form_abmProductos))
+                    .addComponent(form_stocks)
+                    .addComponent(form_compras)
+                    .addComponent(form_exit, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(5, 5, 5)
+                .addComponent(jLabel2)
+                .addGap(5, 5, 5)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(form_comboProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4)
+                    .addComponent(form_comboProductos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(8, 8, 8)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 371, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
+
+        layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {form_abmProductos, form_abmProveedores, form_compras, form_exit, form_stocks});
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -110,6 +205,42 @@ public class Principal extends javax.swing.JFrame {
     //Constructor del form, aca declarar las variables y sus atributos.
     public Principal() {
         initComponents();
+        //Funcion para completar los combos de proveedores y productos.
+        deleteTableElements();
+        //Seteo de los valores de las filas de la tabla en el centro
+        DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
+        renderer.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
+        for (int i=0; i<form_tablaCompras.getColumnCount();i++){
+            form_tablaCompras.setDefaultRenderer(form_tablaCompras.getColumnClass(i),renderer);
+        }
+        //Seteo de los valores de las cabezeras de la tabla en el centro
+        DefaultTableCellRenderer renderer2 = (DefaultTableCellRenderer) form_tablaCompras.getTableHeader().getDefaultRenderer();
+        renderer2.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
+        
+        
+        //Completar los combos de prod y prov.
+        List<Proveedores> prov = null;
+        List<Productos> prod = null;
+        try {
+            prov = ControladoraMedia.getProveedores();
+            prod = ControladoraMedia.getProductos();
+        } catch (StorageException ex) {
+            Logger.getLogger(VistaCompras.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null,"Error al cargar los combos de productos y proveedores.","Error Vista Compras: formWindowGainedFocus!!",JOptionPane.WARNING_MESSAGE);
+        }
+        if(prov != null && prod != null)
+            completarCombo(prov,prod);
+        
+    }
+    //Borrar todos los elementos de la tabla
+    private void deleteTableElements(){
+        DefaultTableModel modelo2 = (DefaultTableModel) form_tablaCompras.getModel();        
+        //Borrar los valores que ya existen, para no repetirlos en la tabla.
+        if (modelo2.getRowCount() > 0) {
+            for (int i = modelo2.getRowCount() - 1; i > -1; i--) {
+                modelo2.removeRow(i);
+            }
+        }
     }
     
     //Boton de salir del programa.
@@ -119,28 +250,143 @@ public class Principal extends javax.swing.JFrame {
 
     //Boton para mostrar el ABM de los productos
     private void form_abmProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_form_abmProductosActionPerformed
+        //Setear el bool para recargar los datos a falso.
+        alreadyShowed = false;
+        //Mostrar el form correspondiente.
         VistaProductos productos = new VistaProductos(this, rootPaneCheckingEnabled);
         productos.setVisible(true);
     }//GEN-LAST:event_form_abmProductosActionPerformed
 
     //Boton para mostrar el ABM de los proveedores
     private void form_abmProveedoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_form_abmProveedoresActionPerformed
+        //Setear el bool para recargar los datos a falso.
+        alreadyShowed = false;
+        //Mostrar el form correspondiente.
         VistaProveedores proveedores = new VistaProveedores(this, rootPaneCheckingEnabled);
         proveedores.setVisible(true);
     }//GEN-LAST:event_form_abmProveedoresActionPerformed
 
     //Boton para mostrar la vista de los stocks de productos.
     private void form_stocksActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_form_stocksActionPerformed
+        //Setear el bool para recargar los datos a falso.
+        alreadyShowed = false;
+        //Mostrar el form correspondiente.
         VistaStocks stocks = new VistaStocks(this, rootPaneCheckingEnabled);
         stocks.setVisible(true);
     }//GEN-LAST:event_form_stocksActionPerformed
 
     //Boton para mostrar la vista de las compras realizadas o realizar
     private void form_comprasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_form_comprasActionPerformed
+        //Setear el bool para recargar los datos a falso.
+        alreadyShowed = false;
+        //Mostrar el form correspondiente.
         VistaCompras compras = new VistaCompras(this, rootPaneCheckingEnabled);
         compras.setVisible(true);
     }//GEN-LAST:event_form_comprasActionPerformed
+    
+    //Evento en el que se cambia el item seleccionado del combo de proveedores.
+    private void form_comboProveedorItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_form_comboProveedorItemStateChanged
+        
+        //Eliminar los valores antiguos de la tabla.
+        deleteTableElements();
+        //Obtener el proveedor seleccionado y insertar en el combo de productos los productos de este.
+        String proveedorElegido = form_comboProveedor.getSelectedItem().toString();
+        completarComboProductoSegunProveedor(proveedorElegido);
+        
+    }//GEN-LAST:event_form_comboProveedorItemStateChanged
 
+    //Funcion para completar el combo productos segun el proveedor elegido.
+    private void completarComboProductoSegunProveedor(String proveedorElegido){
+        
+        //Obtener la lista de productos.
+        List<Productos> listaProductos = null;
+        try {
+            listaProductos = ControladoraMedia.getProductos();
+        } catch (StorageException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null,"Error al cargar la lista.","Error Principal: completarComboProductoSegunProveedor!!",JOptionPane.WARNING_MESSAGE);
+        }
+        
+        //Setear el modelo del combo a uno nuevo, para luego completarlo.
+        DefaultComboBoxModel model = (DefaultComboBoxModel) new JComboBox().getModel();
+        model.addElement("Seleccionar...");
+        form_comboProductos.setModel(model);
+        //Completar el modelo del combo.
+        for(Productos p : listaProductos)
+            form_comboProductos.addItem(p.getProducto());
+        
+        //Si hay un proveedor elegido borrar los productos que no son de este.
+        if(!proveedorElegido.equals("Seleccionar...")){
+            try {
+                for(Productos p : listaProductos){
+                    String proveedorProducto = ControladoraProveedores.getProveedor(p.getIdProveedor()).getProveedor();
+                    if(!proveedorProducto.equals(proveedorElegido)){
+                        form_comboProductos.removeItem(p.getProducto());
+                    }
+                }
+            } catch (StorageException ex) {
+                Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null,"Error al comparar la lista.","Error Principal: form_comboProductosItemStateChanged!!",JOptionPane.WARNING_MESSAGE);
+            }
+        }
+    }
+    
+    //Evento en el que se cambia el item seleccionado del combo de productos.
+    private void form_comboProductosItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_form_comboProductosItemStateChanged
+        //Eliminar los valores antiguos de la tabla.
+        deleteTableElements();
+        //Si se selecciono algun producto desactivar el combo de proveedores.
+        String productoElegido = form_comboProductos.getSelectedItem().toString();
+        //Bandera para ver si es posible elegir un proveedor o no.
+        boolean isActive = false;
+        if(productoElegido.equals("Seleccionar..."))
+            isActive = true;
+        //Completar la tabla segun el elemento elegido
+        completarTablaSegunProducto(productoElegido);
+        form_comboProveedor.setEnabled(isActive);
+    }//GEN-LAST:event_form_comboProductosItemStateChanged
+    //Completar la tabla segun el producto elegido.
+    private void completarTablaSegunProducto(String productoElegido){
+        List<Productos> listaProductos = null;
+            try {
+                listaProductos = ControladoraMedia.getProductos();
+                DefaultTableModel modelo = (DefaultTableModel) form_tablaCompras.getModel();
+                for(Productos p : listaProductos){
+                    if(productoElegido.equals(p.getProducto()) || productoElegido.equals("Seleccionar...")){
+                        String[] data = new String[6];
+                        data[0] = String.valueOf(p.getIdProducto());
+                        data[1] = p.getProducto();
+                        data[2] = ControladoraProveedores.getProveedor(p.getIdProveedor()).getProveedor();
+                        data[3] = "$" + String.valueOf(p.getPrecio());
+                        data[4] = String.valueOf(p.getStock());
+                        modelo.addRow(data);
+                    }
+                }
+                form_tablaCompras.setModel(modelo);
+            } catch (StorageException ex) {
+                Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null,"Error al cargar los combos de productos y proveedores.","Error Principal: form_comboProductosItemStateChanged!!",JOptionPane.WARNING_MESSAGE);
+            }
+    }
+        //Funcion para completar los combobox con los valores de proveedores y productos.
+    public void completarCombo(List<Proveedores> prov, List<Productos> prod){
+        //Si los combos no tienen nada se completan.
+        if(form_comboProductos.getItemCount() <= 0 && form_comboProveedor.getItemCount() <= 0){
+            form_comboProductos.addItem("Seleccionar...");
+            form_comboProveedor.addItem("Seleccionar...");
+            for(Proveedores p : prov)
+                form_comboProveedor.addItem(p.getProveedor());
+            for(Productos p : prod)
+                form_comboProductos.addItem(p.getProducto());
+        }
+        //Si no, se pone el item seleccionado al basico, ya que se activara cuando se gana el foco del form
+        //ya sea porque se abrio el form o porque se volvio a este desde otro form.
+        else{
+            form_comboProveedor.setSelectedItem("Seleccionar...");
+            form_comboProductos.setSelectedItem("Seleccionar...");
+        }
+    }
+    
     //Main!!
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -177,9 +423,16 @@ public class Principal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton form_abmProductos;
     private javax.swing.JButton form_abmProveedores;
+    private javax.swing.JComboBox form_comboProductos;
+    private javax.swing.JComboBox form_comboProveedor;
     private javax.swing.JButton form_compras;
     private javax.swing.JButton form_exit;
     private javax.swing.JButton form_stocks;
+    private javax.swing.JTable form_tablaCompras;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }

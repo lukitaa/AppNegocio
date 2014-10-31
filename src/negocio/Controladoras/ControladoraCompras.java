@@ -103,3 +103,10 @@ public class ControladoraCompras extends ControladoraMedia {
         }
     }
 }
+
+
+
+
+//ESTO VA A SER USADO PARA MOSTRAR LAS COMPRAS DE TAL FECHA A TAL OTRA
+//from Compras where Fecha > '2014-10-19'   -> HQL QUERY 
+//select compras0_.IdCompra as col_0_0_ from testing.compras compras0_ where (Fecha>'2014-10-19') -> SQL QUERY
