@@ -169,7 +169,7 @@ public class VistaStocks extends javax.swing.JDialog {
             Logger.getLogger(VistaProveedores.class.getName()).log(Level.SEVERE, null, ex);
         }
         //Si no se selecciono ningun producto mostrar todos, caso contrario, mostrar el seleccionado.
-        if(producto == "Seleccionar..."){
+        if(producto.equals("Seleccionar...")){
             //Volver a imprimir todos los datos en la tabla.
             agregarDataEnTabla(modelo,prod,true,"");
         }
@@ -190,7 +190,7 @@ public class VistaStocks extends javax.swing.JDialog {
                 data[0] = p.getIdProducto().toString();
                 data[1] = p.getProducto();
                 data[2] = String.valueOf(p.getStock());
-                data[3] = String.valueOf(p.getPrecio());
+                data[3] = "$" + String.valueOf(p.getPrecio());
                 modelo.addRow(data);
             }
         }
@@ -200,7 +200,7 @@ public class VistaStocks extends javax.swing.JDialog {
                     data[0] = p.getIdProducto().toString();
                     data[1] = p.getProducto();
                     data[2] = String.valueOf(p.getStock());
-                    data[3] = String.valueOf(p.getPrecio());
+                    data[3] = "$" + String.valueOf(p.getPrecio());
                     modelo.addRow(data);
                 }
             }   

@@ -142,6 +142,7 @@ public class AltaCompra extends javax.swing.JDialog {
         form_comboProducto.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
         form_comboProducto.setToolTipText("<html>\n\t<strong>El producto que se compro.</strong>\n</html>");
 
+        form_tablaProductos.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         form_tablaProductos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 

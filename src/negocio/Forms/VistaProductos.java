@@ -243,7 +243,7 @@ public class VistaProductos extends javax.swing.JDialog {
                 data[1] = p.getProducto();
                 data[2] = ControladoraProveedores.getProveedor(p.getIdProveedor()).getProveedor();
                 data[3] = String.valueOf(p.getStock());
-                data[4] = String.valueOf(p.getPrecio());
+                data[4] = "$" + String.valueOf(p.getPrecio());
                 modelo.addRow(data);
             }
             form_tablaProductos.setModel(modelo);
