@@ -291,10 +291,35 @@ public class Principal extends javax.swing.JFrame {
         deleteTableElements();
         //Obtener el proveedor seleccionado y insertar en el combo de productos los productos de este.
         String proveedorElegido = form_comboProveedor.getSelectedItem().toString();
+        completarTablaSegunProveedor(proveedorElegido);
         completarComboProductoSegunProveedor(proveedorElegido);
         
     }//GEN-LAST:event_form_comboProveedorItemStateChanged
 
+    //Funcion para completar la tabla con todos los productos del proveedor elegido.
+    private void completarTablaSegunProveedor(String proveedorElegido){
+        List<Productos> listaProductos = null;
+        try {
+            listaProductos = ControladoraMedia.getProductos();
+            DefaultTableModel modelo = (DefaultTableModel) form_tablaCompras.getModel();
+            for(Productos p : listaProductos){
+                String proveedorAux = ControladoraProveedores.getProveedor(p.getIdProveedor()).getProveedor();
+                if(proveedorAux.equals(proveedorElegido) || proveedorElegido.equals("Seleccionar...")){
+                    String[] data = new String[6];
+                    data[0] = String.valueOf(p.getIdProducto());
+                    data[1] = p.getProducto();
+                    data[2] = ControladoraProveedores.getProveedor(p.getIdProveedor()).getProveedor();
+                    data[3] = "$" + String.valueOf(p.getPrecio());
+                    data[4] = String.valueOf(p.getStock());
+                    modelo.addRow(data);
+                }
+            }
+            form_tablaCompras.setModel(modelo);
+        } catch (StorageException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     //Funcion para completar el combo productos segun el proveedor elegido.
     private void completarComboProductoSegunProveedor(String proveedorElegido){
         
