@@ -108,7 +108,7 @@ public class VistaProductos extends javax.swing.JDialog {
 
             },
             new String [] {
-                "ID Producto", "Producto", "Proveedor", "Stock", "Precio"
+                "ID Producto", "Producto", "Proveedor", "Precio", "Stock"
             }
         ) {
             Class[] types = new Class [] {

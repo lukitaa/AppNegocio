@@ -5,15 +5,20 @@
  */
 package negocio.Forms;
 
+import com.mysql.jdbc.StringUtils;
 import java.awt.Frame;
+import java.awt.HeadlessException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import negocio.Controladoras.ControladoraProductos;
+import negocio.Controladoras.ControladoraProveedores;
 import negocio.Controladoras.StorageException;
 import negocio.Entidades.Productos;
+import negocio.Entidades.Proveedores;
 
 /**
  *
@@ -58,6 +63,7 @@ public class VistaStocks extends javax.swing.JDialog {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         form_comboProductos = new javax.swing.JComboBox();
+        form_modificarStockBoton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addWindowFocusListener(new java.awt.event.WindowFocusListener() {
@@ -74,14 +80,14 @@ public class VistaStocks extends javax.swing.JDialog {
 
             },
             new String [] {
-                "ID Producto", "Producto", "Stock", "Precio"
+                "ID Producto", "Producto", "Proveedor", "Precio", "Stock"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -108,6 +114,15 @@ public class VistaStocks extends javax.swing.JDialog {
             }
         });
 
+        form_modificarStockBoton.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
+        form_modificarStockBoton.setText("Modificar el stock del producto seleccionado");
+        form_modificarStockBoton.setToolTipText("<html> <strong> Modificar el stock del producto seleccionado. </strong></html>");
+        form_modificarStockBoton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                form_modificarStockBotonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -115,16 +130,20 @@ public class VistaStocks extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 546, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addGap(4, 4, 4)
-                        .addComponent(form_comboProductos, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(form_comboProductos, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(10, 10, 10)
+                                .addComponent(jLabel1)
+                                .addGap(0, 0, Short.MAX_VALUE))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(form_modificarStockBoton, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(75, 75, 75)
-                .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -137,7 +156,9 @@ public class VistaStocks extends javax.swing.JDialog {
                     .addComponent(form_comboProductos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(form_modificarStockBoton)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -152,6 +173,60 @@ public class VistaStocks extends javax.swing.JDialog {
     private void form_comboProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_form_comboProductosActionPerformed
         refreshDataTable((String) form_comboProductos.getSelectedItem());
     }//GEN-LAST:event_form_comboProductosActionPerformed
+
+    //Boton para mostrar un poput para pedir el nuevo stock del producto.
+    private void form_modificarStockBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_form_modificarStockBotonActionPerformed
+        //Mostrar un popup si todo esta bien, se actualiza y se guarda.
+        if(form_tablaProductos.getSelectedRow() != -1){
+            boolean done = false;
+            while(!done){
+                String nuevoStock = JOptionPane.showInputDialog("Ingrese el nuevo stock del producto. \nRecuerde que este debe ser del formato: 1KG500gr = 1500");
+                //Checkear si el valor esta vacio o es null.
+                if(nuevoStock.isEmpty() || nuevoStock == null){
+                    JOptionPane.showMessageDialog(null,"El valor ingresado no puede estar vacio.","Valor ingresado incorrecto!",JOptionPane.WARNING_MESSAGE);
+                }
+                else{
+                    //Checkear si se ingreso un Integer, caso contrario volver a mostrar el dialog.
+                    try{
+                        Integer.parseInt(nuevoStock);
+
+                        //actualizar el stock.
+                        Productos p = null;
+                        if(form_tablaProductos.getSelectedRow() != -1){
+                            try {
+                                List<Productos> prod = null;
+                                int filaElegida = form_tablaProductos.getSelectedRow();
+                                prod = ControladoraProductos.getProductos();
+                                p = prod.get(filaElegida);
+                            } catch (StorageException ex) {
+                                Logger.getLogger(VistaProveedores.class.getName()).log(Level.SEVERE, null, ex);
+                                JOptionPane.showMessageDialog(null,"Error al cargar la lista de productos..","Error cargar lista!",JOptionPane.WARNING_MESSAGE);
+                            }
+                        }
+                        //Obtener los datos ingresados para modificar.
+                        String nombreProd = p.getProducto();
+
+                        int stock = Integer.valueOf(nuevoStock);
+                        float precio = p.getPrecio();
+                        //Obtener el proveedor elegido.
+                        Proveedores prov = ControladoraProveedores.getProveedor(p.getIdProveedor());
+                        try {
+                            ControladoraProductos.updateProducto(p,nombreProd,stock,precio,prov);
+                            JOptionPane.showMessageDialog(null,"El stock del producto se ha modificado correctamente.","Modificar producto",JOptionPane.PLAIN_MESSAGE);
+                        } catch (StorageException ex) {
+                            Logger.getLogger(ModificarProveedor.class.getName()).log(Level.SEVERE, null, ex);
+                            JOptionPane.showMessageDialog(null,"Error al modicar datos del producto.","Error form_modificarDatosActionPerformed Form/ModificarProducto!",JOptionPane.WARNING_MESSAGE);
+                        }
+                        done = true;
+                    }catch (NumberFormatException | HeadlessException | StorageException e){
+                        JOptionPane.showMessageDialog(null,"El valor ingresado no es un numero, por favor ingrese un valor correcto.","Valor ingresado incorrecto!",JOptionPane.WARNING_MESSAGE);
+                    }
+                }
+            }
+        }
+        else
+            JOptionPane.showMessageDialog(null,"Debes seleccionar el producto a modificar.","Alerta error",JOptionPane.WARNING_MESSAGE);
+    }//GEN-LAST:event_form_modificarStockBotonActionPerformed
 
     //Funcion para actualizar los valores mostrados en la tabla.
     public void refreshDataTable(String producto){
@@ -184,13 +259,18 @@ public class VistaStocks extends javax.swing.JDialog {
     //PARAMETROS: - modelo: La tabla a modificar | - listaProd: La lista con todos los productos.
     //PARAMETROS: - todos: Hay que mostrar todos o el seleccionado? | - productoAMostrar: el nombre del producto a mostrar
     public void agregarDataEnTabla(DefaultTableModel modelo,List<Productos> listaProd, boolean todos,String productoAMostrar){
-        String[] data = new String[4];
+        String[] data = new String[5];
         if(todos){
             for(Productos p : listaProd){
                 data[0] = p.getIdProducto().toString();
                 data[1] = p.getProducto();
-                data[2] = String.valueOf(p.getStock());
+                try {
+                        data[2] = ControladoraProveedores.getProveedor(p.getIdProveedor()).getProveedor();
+                    } catch (StorageException ex) {
+                        Logger.getLogger(VistaStocks.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 data[3] = "$" + String.valueOf(p.getPrecio());
+                data[4] = String.valueOf(p.getStock());
                 modelo.addRow(data);
             }
         }
@@ -199,8 +279,13 @@ public class VistaStocks extends javax.swing.JDialog {
                 if(p.getProducto().equals(productoAMostrar)){
                     data[0] = p.getIdProducto().toString();
                     data[1] = p.getProducto();
-                    data[2] = String.valueOf(p.getStock());
-                    data[3] = "$" + String.valueOf(p.getPrecio());
+                    try {
+                        data[2] = ControladoraProveedores.getProveedor(p.getIdProveedor()).getProveedor();
+                    } catch (StorageException ex) {
+                        Logger.getLogger(VistaStocks.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    data[3] = String.valueOf(p.getStock());
+                    data[4] = "$" + String.valueOf(p.getPrecio());
                     modelo.addRow(data);
                 }
             }   
@@ -265,6 +350,7 @@ public class VistaStocks extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox form_comboProductos;
+    private javax.swing.JButton form_modificarStockBoton;
     private javax.swing.JTable form_tablaProductos;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

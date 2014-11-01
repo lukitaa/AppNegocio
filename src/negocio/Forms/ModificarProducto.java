@@ -35,6 +35,7 @@ public class ModificarProducto extends javax.swing.JDialog {
             productoModificar = ControladoraProductos.getProduct(VistaProductos.productoModificar.getIdProducto());
         } catch (StorageException ex) {
             Logger.getLogger(ModificarProducto.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null,"Error al cargar el producto a modificar.","Error Constructor Form/ModificarProducto!",JOptionPane.WARNING_MESSAGE);
         }
     }
 
@@ -187,6 +188,7 @@ public class ModificarProducto extends javax.swing.JDialog {
             session.close();
         } catch (StorageException ex) {
             Logger.getLogger(ModificarProducto.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null,"Error al cargar al completar el combo de proveedores.","Error completarCombo Form/ModificarProducto!",JOptionPane.WARNING_MESSAGE);
         }
     }
     
@@ -205,6 +207,7 @@ public class ModificarProducto extends javax.swing.JDialog {
             this.setVisible(false);
         } catch (StorageException ex) {
             Logger.getLogger(ModificarProveedor.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null,"Error al modicar datos del producto.","Error form_modificarDatosActionPerformed Form/ModificarProducto!",JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_form_modificarDatosActionPerformed
 
@@ -220,6 +223,7 @@ public class ModificarProducto extends javax.swing.JDialog {
             }
         } catch (StorageException ex) {
             Logger.getLogger(ModificarProducto.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null,"Error al obtener el proveedor seleccionado.","Error obtenerProveedorSeleccionado Form/ModificarProducto!",JOptionPane.WARNING_MESSAGE);
         }
         return prov;
     }
