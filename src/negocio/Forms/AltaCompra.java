@@ -45,6 +45,10 @@ public class AltaCompra extends javax.swing.JDialog {
     public AltaCompra(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        
+        //Centrar el form en la pantalla.
+        this.setLocationRelativeTo(null);
+        
         //Inicializar la lista de detalles.
         listaDetalles = new ArrayList();
         //Seteo de los valores de las filas de la tabla en el centro

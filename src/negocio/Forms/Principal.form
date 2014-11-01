@@ -126,7 +126,7 @@
           <Font name="Dialog" size="12" style="1"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Sector Stocks"/>
-        <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;&#xa;&#x9;&lt;ul&gt;&lt;strong&gt;Sector en el cual se puede: &lt;/strong&gt;&#xa;&#x9;&lt;li&gt; Observar los stocks de cada producto.&#xa;&#x9;&lt;/ul&gt;&#xa;&lt;/html&gt;"/>
+        <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;&#xa;&#x9;&lt;ul&gt;&lt;strong&gt;Sector en el cual se puede: &lt;/strong&gt;&#xa;&#x9;&lt;li&gt; Observar los stocks de cada producto.&#xa;&#x9;&lt;li&gt; Modificar el stock de un producto seleccionado.&#xa;&#x9;&lt;/ul&gt;&#xa;&lt;/html&gt;"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="form_stocksActionPerformed"/>

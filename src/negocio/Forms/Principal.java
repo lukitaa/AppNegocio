@@ -69,7 +69,7 @@ public class Principal extends javax.swing.JFrame {
 
         form_stocks.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         form_stocks.setText("Sector Stocks");
-        form_stocks.setToolTipText("<html>\n\t<ul><strong>Sector en el cual se puede: </strong>\n\t<li> Observar los stocks de cada producto.\n\t</ul>\n</html>");
+        form_stocks.setToolTipText("<html>\n\t<ul><strong>Sector en el cual se puede: </strong>\n\t<li> Observar los stocks de cada producto.\n\t<li> Modificar el stock de un producto seleccionado.\n\t</ul>\n</html>");
         form_stocks.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 form_stocksActionPerformed(evt);
@@ -215,6 +215,9 @@ public class Principal extends javax.swing.JFrame {
     //Constructor del form, aca declarar las variables y sus atributos.
     public Principal() {
         initComponents();
+        
+        //Centrar el form en la pantalla.
+        this.setLocationRelativeTo(null);
         
         //Funcion para completar los combos de proveedores y productos.
         deleteTableElements();

@@ -5,7 +5,11 @@
  */
 package negocio.Controladoras;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.util.List;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 import negocio.DAO.ComprasDaoImpl;
 import negocio.DAO.DetallesDaoImpl;
 import negocio.DAO.ProductosDaoImpl;

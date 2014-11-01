@@ -31,10 +31,14 @@ public class VistaProveedores extends javax.swing.JDialog {
      */
     public VistaProveedores(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
-        this.setLocationRelativeTo(parent);
         initComponents();
+        
+        //Centrar el form en la pantalla.
+        this.setLocationRelativeTo(null);
+        
         //Tener al Frame padre guardado para usar.
         framePrincipal = parent;
+        
         //Seteo de los valores de las filas de la tabla en el centro
         DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
         renderer.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);

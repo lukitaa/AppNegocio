@@ -23,8 +23,10 @@ public class AltaProveedor extends javax.swing.JDialog {
      */
     public AltaProveedor(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
-        this.setLocationRelativeTo(parent);
         initComponents();
+        
+        //Centrar el form en la pantalla.
+        this.setLocationRelativeTo(null);
     }
 
     /**

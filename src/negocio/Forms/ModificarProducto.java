@@ -29,8 +29,12 @@ public class ModificarProducto extends javax.swing.JDialog {
      */
     public ModificarProducto(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
-        this.setLocationRelativeTo(parent);
         initComponents();
+        
+        //Centrar el form en la pantalla.
+        this.setLocationRelativeTo(null);
+        
+        //Obtener y setear el producto a modificar.
         try {
             productoModificar = ControladoraProductos.getProduct(VistaProductos.productoModificar.getIdProducto());
         } catch (StorageException ex) {

@@ -27,8 +27,9 @@ public class AltaProducto extends javax.swing.JDialog {
      */
     public AltaProducto(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
-        this.setLocationRelativeTo(parent);
         initComponents();
+        //Centrar el form en la pantalla.
+        this.setLocationRelativeTo(null);
         //Rellenar los valores del componente de los proveedores.
         rellenarComboBox(form_proveedor);
     }

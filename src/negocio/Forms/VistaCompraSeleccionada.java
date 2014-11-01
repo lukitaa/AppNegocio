@@ -34,9 +34,15 @@ public class VistaCompraSeleccionada extends javax.swing.JDialog {
      */
     public VistaCompraSeleccionada(java.awt.Frame parent, boolean modal, int compraModificar) {
         super(parent, modal);
+        
         //Setear el id de la compra.
         this.idCompraModificar = compraModificar;
+        
         initComponents();
+        
+        //Centrar el form en la pantalla.
+        this.setLocationRelativeTo(null);
+        
         //Centrar los valores de la tabla.
         //Seteo de los valores de las filas de la tabla en el centro
         DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
@@ -47,6 +53,7 @@ public class VistaCompraSeleccionada extends javax.swing.JDialog {
         //Seteo de los valores de las cabezeras de la tabla en el centro
         DefaultTableCellRenderer renderer2 = (DefaultTableCellRenderer) form_detallesTabla.getTableHeader().getDefaultRenderer();
         renderer2.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
+        
         //Funcion para cargar la tabla con los datos.
         cargarTabla(idCompraModificar);
     }
