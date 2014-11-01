@@ -68,6 +68,7 @@ public class VistaStocks extends javax.swing.JDialog {
             }
         });
 
+        form_tablaProductos.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         form_tablaProductos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 

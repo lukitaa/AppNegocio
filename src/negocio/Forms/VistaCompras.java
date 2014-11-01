@@ -83,7 +83,7 @@ public class VistaCompras extends javax.swing.JDialog {
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         jLabel1.setText("Sector para observar o realizar compras");
 
-        form_tablaCompras.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
+        form_tablaCompras.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         form_tablaCompras.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 

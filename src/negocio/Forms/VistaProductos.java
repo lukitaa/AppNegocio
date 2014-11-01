@@ -14,6 +14,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import negocio.Controladoras.ControladoraProductos;
+import negocio.Controladoras.ControladoraProveedores;
 import negocio.Controladoras.InvalidParameterException;
 import negocio.Controladoras.StorageException;
 import negocio.Entidades.Productos;
@@ -101,19 +102,20 @@ public class VistaProductos extends javax.swing.JDialog {
             }
         });
 
+        form_tablaProductos.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         form_tablaProductos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "ID Producto", "Producto", "Stock", "Precio"
+                "ID Producto", "Producto", "Proveedor", "Stock", "Precio"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -236,11 +238,12 @@ public class VistaProductos extends javax.swing.JDialog {
         try {
             prod = ControladoraProductos.getProductos();
             for(Productos p : prod){
-                String[] data = new String[4];
+                String[] data = new String[5];
                 data[0] = p.getIdProducto().toString();
                 data[1] = p.getProducto();
-                data[2] = String.valueOf(p.getStock());
-                data[3] = String.valueOf(p.getPrecio());
+                data[2] = ControladoraProveedores.getProveedor(p.getIdProveedor()).getProveedor();
+                data[3] = String.valueOf(p.getStock());
+                data[4] = String.valueOf(p.getPrecio());
                 modelo.addRow(data);
             }
             form_tablaProductos.setModel(modelo);

@@ -20,11 +20,13 @@ import negocio.Controladoras.ControladoraAltaCompra;
 import negocio.Controladoras.ControladoraCompras;
 import negocio.Controladoras.ControladoraDetalles;
 import negocio.Controladoras.ControladoraProductos;
+import negocio.Controladoras.ControladoraProveedores;
 import negocio.Controladoras.InvalidParameterException;
 import negocio.Controladoras.StorageException;
 import negocio.Entidades.Compras;
 import negocio.Entidades.Detalles;
 import negocio.Entidades.Productos;
+import negocio.Entidades.Proveedores;
 import negocio.Hibernate.HibernateUtil;
 import org.hibernate.Session;
 
@@ -291,6 +293,7 @@ public class AltaCompra extends javax.swing.JDialog {
             error = true;
             Logger.getLogger(AltaCompra.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
         //Obtener la ultima compra, realizada anteriormente, para agregar en el detalle.
         Session session = HibernateUtil.getSessionFactory().openSession();
         Compras ultimaCompra = ControladoraAltaCompra.obtenerUltimaCompra(session);
@@ -301,6 +304,7 @@ public class AltaCompra extends javax.swing.JDialog {
             ultimaCompra.getDetalleses().add(d);
         }
         session.close();
+        
         //Updatear la compra con los detalles agregados.
         try {
             ControladoraCompras.updateCompra(ultimaCompra);
@@ -309,6 +313,20 @@ public class AltaCompra extends javax.swing.JDialog {
             error = true;
             JOptionPane.showMessageDialog(null,"Error al intentar updatear la compra con el set de detalles.","Error AltaCompra - form_botonRealizarCompraActionPerformed!",JOptionPane.PLAIN_MESSAGE);
         }
+        
+        //Updatear los stocks de los productos segun la cantidad comprada.
+        for(Detalles d : listaDetalles){
+            try {
+                Productos p = ControladoraProductos.getProduct(d.getProductos().getIdProducto());
+                int nuevoStock = p.getStock() + d.getCantidad();
+                Proveedores pr = ControladoraProveedores.getProveedor(p.getIdProveedor());
+                ControladoraProductos.updateProducto(p, p.getProducto(), nuevoStock, p.getPrecio(), pr);
+            } catch (StorageException ex) {
+                Logger.getLogger(AltaCompra.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null,"Error al actualizar el stock de los productos.","Error AltaCompra - form_botonRealizarCompraActionPerformed!",JOptionPane.PLAIN_MESSAGE);
+            }
+        }
+        
         //Finalmente, realizar la compra de los detalles correspondientes, agregando a la BD.
         if(ultimaCompra != null && !error){
             for(Detalles d : listaDetalles){
